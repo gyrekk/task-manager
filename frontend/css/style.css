@@ -1,0 +1,58 @@
+/* Proste style dla czytelności */
+body {
+  display: flex;
+  font-family: sans-serif;
+  height: 100vh;
+  margin: 0;
+}
+aside {
+  width: 200px;
+  background: #333;
+  padding: 20px;
+}
+main {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Styl przycisków */
+.menu-btn {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 5px;
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  text-align: left;
+}
+.menu-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Klasa aktywnego przycisku */
+.menu-btn.active {
+  color: white;
+  background: #007bff;
+  border-left: 3px solid white;
+}
+
+/* Ukrywanie i pokazywanie widoków */
+.view-section {
+  display: none;
+}
+.view-section.active {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <aside>
+      <button class="menu-btn active" data-view="dashboard">Pulpit</button>
+      <button class="menu-btn" data-view="tasks">Zadania</button>
+      <button class="menu-btn" data-view="settings">Ustawienia</button>
+    </aside>
+
+    <main>
+      <div id="dashboard" class="view-section active">
+        <h1>Pulpit</h1>
+        <p>Witaj na stronie głównej.</p>
+      </div>
+
+      <div id="tasks" class="view-section">
+        <h1>Zadania</h1>
+        <p>Lista rzeczy do zrobienia.</p>
+      </div>
+
+      <div id="settings" class="view-section">
+        <h1>Ustawienia</h1>
+        <p>Zmień hasło itp.</p>
+      </div>
+    </main>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
