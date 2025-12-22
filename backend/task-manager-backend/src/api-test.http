@@ -1,0 +1,12 @@
+### Test pobierania
+GET http://localhost:8080/api/tasks
+
+### Test dodawania
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Zadanie z IntelliJ",
+  "description": "Działa bez Postmana",
+  "completed": false
+}

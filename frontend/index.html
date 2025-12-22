@@ -6,29 +6,16 @@
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <aside>
-      <button class="menu-btn active" data-view="dashboard">Pulpit</button>
-      <button class="menu-btn" data-view="tasks">Zadania</button>
-      <button class="menu-btn" data-view="settings">Ustawienia</button>
-    </aside>
+<body>
+    <h1>Moje Zadania</h1>
+    <div>
+        <input type="text" id="taskTitle" placeholder="Wpisz nowe zadanie...">
+        <button id="addBtn">Dodaj</button>
+    </div>
 
-    <main>
-      <div id="dashboard" class="view-section active">
-        <h1>Pulpit</h1>
-        <p>Witaj na stronie głównej.</p>
-      </div>
+    <ul id="taskList"></ul>
 
-      <div id="tasks" class="view-section">
-        <h1>Zadania</h1>
-        <p>Lista rzeczy do zrobienia.</p>
-      </div>
-
-      <div id="settings" class="view-section">
-        <h1>Ustawienia</h1>
-        <p>Zmień hasło itp.</p>
-      </div>
-    </main>
-    <script type="module" src="js/app.js"></script>
+    <script type="module" src="js/main.js"></script>
+</body>
   </body>
 </html>
