@@ -14,7 +14,7 @@ export function renderTaskList(tasks, onDeleteClicked, onToggleClicked) {
     checkbox.onchange = () => onToggleClicked(task);
 
     const span = document.createElement("span");
-    span.textContent = `${task.title} ${task.description} ${task.completed}`;
+    span.textContent = `${task.title} ${task.description} ${task.completed} ${task.priority} ${task.date}`;
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "Delete";

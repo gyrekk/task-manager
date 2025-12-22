@@ -2,6 +2,8 @@ package com.gyrekk.taskmanager.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity // To mówi Springowi: "Na podstawie tej klasy stwórz tabelę w bazie"
 @Table(name = "tasks") // (Opcjonalne) Możesz wymusić nazwę tabeli, np. "tasks"
 public class Task {
@@ -11,6 +13,8 @@ public class Task {
     private String title;
     private String description;
     private boolean completed;
+    private TaskPriority priority;
+    private LocalDate date;
 
     public Long getId() {
         return id;
@@ -44,5 +48,18 @@ public class Task {
         this.completed = completed;
     }
 
+    public TaskPriority getPriority() {
+        return priority;
+    }
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+    }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

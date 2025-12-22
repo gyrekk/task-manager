@@ -2,9 +2,10 @@ import { fetchTasks, createTask, deleteTask, updateTask } from "./api.js";
 import { renderTaskList } from "./ui.js";
 
 document.getElementById("addBtn").addEventListener("click", handleAddTask);
-
 async function handleAddTask() {
   const title = document.getElementById("taskTitle").value;
+  const priority = document.getElementById("taskPriority").value;
+  const date = document.getElementById("taskDate").value;
 
   if (title.trim() === "") {
     alert("Wpisz tytuł!");
@@ -15,6 +16,8 @@ async function handleAddTask() {
     title: title,
     description: "test",
     completed: false,
+    priority: priority,
+    date: date || new Date().toISOString().split("T")[0],
   };
 
   try {
