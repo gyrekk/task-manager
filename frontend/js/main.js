@@ -1,7 +1,8 @@
-import { fetchTasks, createTask, deleteTask, updateTask } from "./api.js";
+import { getTasks, createTask, deleteTask, updateTask } from "./api.js";
 import { renderTaskList } from "./ui.js";
 
 document.getElementById("addBtn").addEventListener("click", handleAddTask);
+
 async function handleAddTask() {
   const title = document.getElementById("taskTitle").value;
   const priority = document.getElementById("taskPriority").value;
@@ -16,6 +17,7 @@ async function handleAddTask() {
     title: title,
     description: "test",
     completed: false,
+    status: "NOT_STARTED",
     priority: priority,
     date: date || new Date().toISOString().split("T")[0],
   };
@@ -42,7 +44,7 @@ export async function handleDeleteTask(id) {
   }
 }
 
-async function handleTaskToggle(task) {
+async function handleToggleComplete(task) {
   const updatedTask = {
     ...task,
     completed: !task.completed,
@@ -56,10 +58,43 @@ async function handleTaskToggle(task) {
   }
 }
 
+async function handleStatusChange(task, value) {
+  const updatedTask = {
+    ...task,
+    status: value,
+  };
+
+  try {
+    await updateTask(task.id, updatedTask);
+    loadAndRenderTasks();
+  } catch (error) {
+    alert("Nie udało się zmienic statusu.");
+  }
+}
+async function handlePriorityChange(task, value) {
+  const updatedTask = {
+    ...task,
+    priority: value,
+  };
+
+  try {
+    await updateTask(task.id, updatedTask);
+    loadAndRenderTasks();
+  } catch (error) {
+    alert("Nie udało się zmienic statusu.");
+  }
+}
+
 async function loadAndRenderTasks() {
   try {
-    const tasks = await fetchTasks();
-    renderTaskList(tasks, handleDeleteTask, handleTaskToggle);
+    const tasks = await getTasks();
+    renderTaskList(
+      tasks,
+      handleDeleteTask,
+      handleToggleComplete,
+      handleStatusChange,
+      handlePriorityChange
+    );
     console.log("Wyświetlanie listy zadan /main.js", tasks);
   } catch (error) {
     console.error("Nie udało się załadować zadań.");

@@ -1,6 +1,6 @@
 import { url } from "./config.js";
 
-export async function fetchTasks() {
+export async function getTasks() {
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error("Błąd pobierania");

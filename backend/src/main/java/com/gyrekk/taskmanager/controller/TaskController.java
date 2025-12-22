@@ -25,7 +25,7 @@ public class TaskController {
 
     @PostMapping
     public Task createTask(@RequestBody Task task) {
-        System.out.println(task.getTitle() + " | " +  task.getDescription() + " | " + task.getPriority() + " | " + task.isCompleted() + " | " + task.getDate());
+        System.out.println(task.getTitle() + " | " +  task.getDescription() + " | " + task.getPriority() + " | " + task.getStatus() + " | " + task.isCompleted() + " | " + task.getDate());
         return taskService.createTask(task); // Kelner woła Kierownika: "Zrób to"
     }
 
@@ -37,7 +37,8 @@ public class TaskController {
 
     @PutMapping("/{id}")
     public Task updateTask(@PathVariable Long id, @RequestBody Task task) {
-        System.out.println("Zmieniono zadanie o nazwie: " + taskService.getTaskById(id).getTitle() + " Status: "+ !taskService.getTaskById(id).isCompleted());
-        return taskService.updateTask(id, task);
+        Task updatedTask = taskService.updateTask(id, task);
+        System.out.println("Zmieniono zadanie na: " + updatedTask.getTitle() + " | " + updatedTask.isCompleted() + " | " + updatedTask.getStatus()+ " | " + updatedTask.getPriority());
+        return updatedTask;
     }
 }

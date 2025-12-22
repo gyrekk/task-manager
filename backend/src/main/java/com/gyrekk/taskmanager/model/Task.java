@@ -13,6 +13,7 @@ public class Task {
     private String title;
     private String description;
     private boolean completed;
+    private TaskStatus status;
     private TaskPriority priority;
     private LocalDate date;
 
@@ -61,5 +62,13 @@ public class Task {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
     }
 }
