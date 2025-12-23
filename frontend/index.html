@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
 <body>
-    <h1>Moje Zadania</h1>
+  <main>
+    <div id="taskList-header">
+      <h2>Tasks</h2>
+      <button>Add New</button>
+    </div>
     <div>
         <input type="text" id="taskTitle" placeholder="Wpisz nowe zadanie...">
         <select name="" id="taskPriority">
@@ -19,10 +23,21 @@
         <input type="date" name="" id="taskDate">
         <button id="addBtn">Dodaj</button>
     </div>
-
-    <ul id="taskList"></ul>
-
-    <script type="module" src="js/main.js"></script>
+      <table>
+        <thead>
+          <tr>
+            <!-- <td>Status</td> -->
+            <td>Task Name</td>
+            <td>Date</td>
+            <td>Priority</td>
+            <td>Status</td>
+            <td>Action</td>
+          </tr>
+        </thead>
+        <tbody id="taskTable"></tbody>
+      </table>
+  </main>
+  <script type="module" src="js/main.js"></script>
 </body>
   </body>
 </html>

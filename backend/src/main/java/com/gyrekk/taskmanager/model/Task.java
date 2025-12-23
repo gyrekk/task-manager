@@ -1,14 +1,19 @@
 package com.gyrekk.taskmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity // To mówi Springowi: "Na podstawie tej klasy stwórz tabelę w bazie"
-@Table(name = "tasks") // (Opcjonalne) Możesz wymusić nazwę tabeli, np. "tasks"
+// Narazie nie potrzebne
+//@Entity // Mówi bazie danych: "Stwórz tabelę na podstawie tej klasy".
+//@Table(name = "tasks") // (Opcjonalne) Nazywa tę tabelę "tasks".
 public class Task {
-    @Id // To jest Klucz Główny (Primary Key)
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Baza sama będzie nadawać kolejne numery ID (Auto Increment)
+
+    @Id // To pole jest Kluczem Głównym (unikalnym identyfikatorem wiersza).
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Baza sama nada numer (Auto Increment: 1, 2, 3...).
     private Long id;
     private String title;
     private String description;
@@ -16,6 +21,14 @@ public class Task {
     private TaskStatus status;
     private TaskPriority priority;
     private LocalDate date;
+
+    // RELACJA: Jeden Task ma Wiele SubTasków.
+    // mappedBy = "task": Mówi, że fizyczne powiązanie jest w klasie SubTask w polu o nazwie "task".
+    // cascade = ALL: Jak zapiszesz/usuniesz Taska, zrób to samo z jego SubTaskami.
+    // orphanRemoval = true: Jak usuniesz SubTaska z tej listy, usuń go też z bazy danych.
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<SubTask> subTasks = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -52,6 +65,7 @@ public class Task {
     public TaskPriority getPriority() {
         return priority;
     }
+
     public void setPriority(TaskPriority priority) {
         this.priority = priority;
     }
@@ -70,5 +84,19 @@ public class Task {
 
     public void setStatus(TaskStatus status) {
         this.status = status;
+    }
+
+    public List<SubTask> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(List<SubTask> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+
+    public void addSubTask(SubTask subTask) {
+        this.subTasks.add(subTask);
+        subTask.setTask(this);
     }
 }

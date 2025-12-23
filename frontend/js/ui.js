@@ -1,32 +1,43 @@
 export function renderTaskList(
   tasks,
   onDelete,
-  onToggleComplete,
+  // onToggleComplete,
   onStatusChange,
   onPriorityChange
 ) {
-  const listElement = document.getElementById("taskList");
-  listElement.innerHTML = "";
+  const tableElement = document.getElementById("taskTable");
+  tableElement.innerHTML = "";
 
   tasks.forEach((task) => {
-    // Task Element
-    const li = document.createElement("li");
-    li.classList.add("task-item");
-
-    const checkboxElement = createCheckbox(task, onToggleComplete);
+    // const checkboxElement = createCheckbox(task, onToggleComplete);
     const selectStatusElement = createStatusSelect(task, onStatusChange);
     const deleteBtnElement = createDeleteBtn(task, onDelete);
     const selectPriorityElement = createPrioritySelect(task, onPriorityChange);
 
-    const infoElement = document.createElement("span");
-    infoElement.textContent = `${task.title} ${task.description} ${task.completed} ${task.priority} ${task.status} ${task.date}`;
+    const tr = document.createElement("tr");
 
-    li.appendChild(checkboxElement);
-    li.appendChild(infoElement);
-    li.appendChild(selectStatusElement);
-    li.appendChild(selectPriorityElement);
-    li.appendChild(deleteBtnElement);
-    listElement.appendChild(li);
+    // Funkcja pomocnicza do tworzenia komórek
+    const createTd = (content, className) => {
+      const td = document.createElement("td");
+      td.className = className;
+      // Sprawdzamy czy content to element HTML czy zwykły tekst
+      if (content instanceof HTMLElement) {
+        td.appendChild(content);
+      } else {
+        td.innerText = content;
+      }
+      return td;
+    };
+
+    // Dodajemy komórki do wiersza
+    // tr.appendChild(createTd(checkboxElement, "checkboxData"));
+    tr.appendChild(createTd(task.title, "titleData"));
+    tr.appendChild(createTd(task.date, "dateData"));
+    tr.appendChild(createTd(selectPriorityElement, "priorityData"));
+    tr.appendChild(createTd(selectStatusElement, "statusData"));
+    tr.appendChild(createTd(deleteBtnElement, "deleteData"));
+
+    tableElement.appendChild(tr);
   });
 }
 

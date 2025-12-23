@@ -81,7 +81,7 @@ async function handlePriorityChange(task, value) {
     await updateTask(task.id, updatedTask);
     loadAndRenderTasks();
   } catch (error) {
-    alert("Nie udało się zmienic statusu.");
+    alert("Nie udało się zmienic priorytetu.");
   }
 }
 

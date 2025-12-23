@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public class InMemoryTaskRepository implements TaskRepository {
 
-    private final List<Task> database = new ArrayList<>();
-    private Long currentId = 1L;
+    private final List<Task> database = new ArrayList<>(); // Nasza "tabela" w pamięci RAM
+    private Long currentId = 1L; // Licznik do generowania ID (zamiast Auto Increment w SQL)
 
     @Override
     public List<Task> findAll() {
@@ -19,12 +19,13 @@ public class InMemoryTaskRepository implements TaskRepository {
 
     @Override
     public Task save(Task task) {
-        if(task.getId()==null){
+        if(task.getId()==null){ // Jeśli nie ma ID, to znaczy, że to NOWY obiekt
             task.setId(currentId);
             currentId++;
         }
-        database.removeIf(t -> t.getId().equals(task.getId()));
-        database.add(task);
+
+        database.removeIf(t -> t.getId().equals(task.getId())); // Jeśli obiekt miał ID (edycja), usuwamy starą wersję z listy
+        database.add(task); // dodajemy nową/zaktualizowaną wersję.
         return task;
     }
 
