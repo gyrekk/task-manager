@@ -1,0 +1,41 @@
+### Pobierz wszystkie zadania (GET)
+GET http://localhost:8080/tasks
+
+### Stwórz nowe zadanie (POST)
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "Task1",
+  "subtasks": [
+    {
+      "name": "Subtask1",
+      "completed": false
+    },
+    {
+      "name": "Subtask2",
+      "completed": false
+    }
+  ]
+}
+
+### Usuń zadanie (DELETE)
+DELETE http://localhost:8080/tasks/4
+
+### Zaaktualizuj zadanie (PUT)
+PUT http://localhost:8080/tasks/5
+Content-Type: application/json
+
+{
+  "name": "Task1(updated)",
+  "subtasks": [
+    {
+      "name": "Działa super",
+      "completed": true
+    },
+    {
+      "name": "test",
+      "completed": true
+    }
+  ]
+}

@@ -1,30 +1,78 @@
-import { getTasks, createTask, deleteTask, updateTask } from "./api.js";
+import {
+  getTasks,
+  createTask,
+  deleteTask,
+  updateTask,
+  createSubTask,
+  updateSubTask,
+  deleteSubTask,
+} from "./api.js";
 import { renderTaskList } from "./ui.js";
 
 document.getElementById("addBtn").addEventListener("click", handleAddTask);
 
-async function handleAddTask() {
-  const title = document.getElementById("taskTitle").value;
-  const priority = document.getElementById("taskPriority").value;
-  const date = document.getElementById("taskDate").value;
+// Subtasks
+async function handleAddSubTask(subTaskName, taskId) {
+  if (subTaskName.trim() === "") {
+    alert("Wpisz nazwę podzadania!");
+    return;
+  }
 
-  if (title.trim() === "") {
+  const newSubtask = {
+    name: subTaskName,
+    completed: false,
+  };
+  try {
+    await createSubTask(newSubtask, taskId);
+    loadAndRenderTasks();
+    console.log("Dodawanie podzadania /main.js", newSubtask);
+  } catch (error) {
+    alert("Błąd podczas dodawania podzadania.");
+  }
+}
+
+async function handleToggleSubTaskComplete(subTask) {
+  const updatedSubTask = {
+    ...subTask,
+    completed: !subTask.completed,
+  };
+
+  try {
+    await updateSubTask(subTask.id, updatedSubTask);
+    loadAndRenderTasks();
+  } catch (error) {
+    alert("Nie udało się zmienic statusu.");
+  }
+}
+
+async function handleDeleteSubtask(subTaskId) {
+  if (!confirm("Na pewno usunąć?")) return;
+
+  try {
+    await deleteSubTask(subTaskId);
+    loadAndRenderTasks();
+    console.log("Usuwanie podzadania /main.js", subTaskId);
+  } catch (error) {
+    alert("Błąd podczas usuwania podzadania.");
+  }
+}
+
+// Tasks
+async function handleAddTask() {
+  const name = document.getElementById("taskName").value;
+
+  if (name.trim() === "") {
     alert("Wpisz tytuł!");
     return;
   }
 
   const newTask = {
-    title: title,
-    description: "test",
-    completed: false,
-    status: "NOT_STARTED",
-    priority: priority,
-    date: date || new Date().toISOString().split("T")[0],
+    name: name,
   };
 
   try {
     await createTask(newTask);
-    document.getElementById("taskTitle").value = "";
+    document.getElementById("taskName").value = "";
     loadAndRenderTasks();
     console.log("Dodawanie zadania /main.js", newTask);
   } catch (error) {
@@ -91,9 +139,12 @@ async function loadAndRenderTasks() {
     renderTaskList(
       tasks,
       handleDeleteTask,
-      handleToggleComplete,
-      handleStatusChange,
-      handlePriorityChange
+      handleAddSubTask,
+      handleToggleSubTaskComplete,
+      handleDeleteSubtask
+      // handleToggleComplete,
+      // handleStatusChange,
+      // handlePriorityChange
     );
     console.log("Wyświetlanie listy zadan /main.js", tasks);
   } catch (error) {
