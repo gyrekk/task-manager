@@ -30,21 +30,27 @@ export function renderTaskList(
       taskItem.classList.add("active");
     }
 
-    taskItem.addEventListener("click", function (e) {
-      this.classList.toggle("active");
-    });
-
     // Task Header
     const taskHeader = document.createElement("div");
     taskHeader.classList.add("task-header");
+
+    taskHeader.addEventListener("click", function (e) {
+      taskItem.classList.toggle("active");
+    });
 
     const activeIcon = createIcon("arrow_forward_ios");
     const activeCell = createData("active", activeIcon);
     activeCell.classList = "task-active";
 
+    const nameCell = document.createElement("div");
+    nameCell.classList = "task-name";
+    nameCell.classList.add("task-item-cell");
+
     const taskName = document.createElement("p");
     taskName.innerText = task.name;
-    const nameCell = createData("name", taskName);
+
+    nameCell.appendChild(activeCell);
+    nameCell.appendChild(taskName);
 
     const taskDate = document.createElement("p");
     taskDate.innerText = "Jan 1, 2025";
@@ -61,9 +67,8 @@ export function renderTaskList(
 
     const actionIcon = createIcon("more_horiz");
     const actionCell = createData("action", actionIcon);
-    actionCell.classList = "task-action";
+    actionCell.classList.add("task-action");
 
-    taskHeader.appendChild(activeCell);
     taskHeader.appendChild(nameCell);
     taskHeader.appendChild(dateCell);
     taskHeader.appendChild(statusCell);
@@ -73,19 +78,64 @@ export function renderTaskList(
 
     //Task Body
     const taskBody = document.createElement("div");
-    taskBody.classList.add("task-body");
+    taskBody.classList = "task-body";
 
+    //task body content
+    const taskBodyContent = document.createElement("div");
+    taskBodyContent.classList = "task-body-content";
+
+    taskBody.appendChild(taskBodyContent);
+
+    //controls
+    const subTaskControls = document.createElement("div");
+    subTaskControls.classList = "sub-tasks-controls";
+
+    const subTaskInput = document.createElement("input");
+    subTaskInput.type = "text";
+    subTaskInput.classList = "sub-task-input";
+    subTaskInput.placeholder = "Enter subtask name";
+    subTaskInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        subTaskAddBtn.click(); // Symulujemy kliknięcie w przycisk
+      }
+    });
+
+    const subTaskAddBtn = document.createElement("button");
+    subTaskAddBtn.classList = "add-sub-task-btn";
+    subTaskAddBtn.innerText = "Add Task";
+    subTaskAddBtn.onclick = () => {
+      const subTaskName = subTaskInput.value;
+      onAddSubTask(subTaskName, task.id);
+      subTaskInput.value = "";
+    };
+    // subTaskAddBtn.addEventListener("");
+
+    subTaskControls.appendChild(subTaskInput);
+    subTaskControls.appendChild(subTaskAddBtn);
+
+    taskBodyContent.appendChild(subTaskControls);
+
+    // subtasks list
     const subTasksList = document.createElement("ul");
+    subTasksList.classList.add("sub-task-list");
 
     task.subtasks.forEach((subTask) => {
       const li = document.createElement("li");
+      li.classList = "sub-task-item";
+
+      li.onclick = (e) => {
+        e.stopPropagation();
+        onToggleSubTaskComplete(subTask);
+      };
 
       const subTaskCheckbox = createCheckbox(subTask, onToggleSubTaskComplete);
 
-      const text = document.createElement("span");
+      const text = document.createElement("p");
       text.innerText = subTask.name;
+      text.className = "sub-task-text";
 
       const subTaskDeleteBtn = createDeleteBtn(subTask, onDeleteSubTask);
+      subTaskDeleteBtn.classList = "sub-task-delete-btn";
 
       li.appendChild(subTaskCheckbox);
       li.appendChild(text);
@@ -93,24 +143,11 @@ export function renderTaskList(
       subTasksList.appendChild(li);
     });
 
-    taskBody.appendChild(subTasksList);
+    taskBodyContent.appendChild(subTasksList);
 
     taskItem.appendChild(taskHeader);
     taskItem.appendChild(taskBody);
     listElement.appendChild(taskItem);
-
-    // const subTaskInput = document.createElement("input");
-    // subTaskInput.type = "text";
-    // subTaskInput.classList = "subTaskName-input";
-    // subTaskInput.placeholder = "Enter subtask name";
-
-    // const subTaskAddBtn = document.createElement("button");
-    // subTaskAddBtn.innerText = "Add Task";
-    // subTaskAddBtn.onclick = () => {
-    //   const subTaskName = subTaskInput.value;
-    //   onAddSubTask(subTaskName, task.id);
-    //   subTaskInput.value = "";
-    // };
 
     // mainRow.addEventListener("click", function (e) {
     //   detailsRow.classList.toggle("active");
@@ -128,27 +165,44 @@ function createIcon(iconName) {
 function createData(data, component) {
   const cell = document.createElement("div");
   cell.classList = `task-${data}`;
+  cell.classList.add("task-item-cell");
   cell.appendChild(component);
   return cell;
 }
 
 function createCheckbox(subTask, onToggleSubTaskComplete) {
+  const label = document.createElement("label");
+  label.classList = "sub-task-custom-checkbox";
+  label.onclick = (e) => {
+    e.stopPropagation();
+  };
+
+  const checkmark = document.createElement("div");
+  checkmark.classList = "sub-task-checkmark";
+  const checkmarkIcon = document.createElement("span");
+  checkmarkIcon.classList = "material-symbols-outlined";
+  checkmarkIcon.innerText = "check";
+  checkmark.appendChild(checkmarkIcon);
+
   const checkbox = document.createElement("input");
+  checkbox.classList = "sub-task-checkbox";
   checkbox.type = "checkbox";
   checkbox.checked = subTask.completed;
   checkbox.onchange = () => {
     onToggleSubTaskComplete(subTask);
   };
-  checkbox.onclick = (e) => {
-    e.stopPropagation();
-  };
-  return checkbox;
+
+  label.appendChild(checkbox);
+  label.appendChild(checkmark);
+  return label;
 }
 
 function createDeleteBtn(task, onDelete) {
   const deleteBtn = document.createElement("button");
-  deleteBtn.textContent = "Delete";
-
+  const span = document.createElement("span");
+  span.classList = "material-symbols-outlined";
+  span.innerText = "close";
+  deleteBtn.appendChild(span);
   deleteBtn.onclick = (e) => {
     e.stopPropagation();
     onDelete(task.id);

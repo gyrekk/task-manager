@@ -13,6 +13,7 @@ public class Task {
     private Long id;
     private String name;
 
+
     @OneToMany(mappedBy ="task", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<SubTask> subtasks = new ArrayList<>();
