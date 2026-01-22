@@ -9,7 +9,23 @@ import {
 } from "./api.js";
 import { renderTaskList } from "./ui.js";
 
-document.getElementById("addBtn").addEventListener("click", handleAddTask);
+// document
+//   .getElementById("add-task-btn")
+//   .addEventListener("click", toggleOpenAddTaskMenu);
+// document
+//   .getElementById("addTaskMenu-button-close")
+//   .addEventListener("click", function () {
+//     document.getElementById("addTaskMenu-form").reset();
+//     toggleOpenAddTaskMenu();
+//   });
+
+// document
+//   .getElementById("addTaskMenu-form")
+//   .addEventListener("submit", async function (e) {
+//     e.preventDefault();
+
+//     handleAddTask();
+//   });
 
 // Subtasks
 async function handleAddSubTask(subTaskName, taskId) {
@@ -72,8 +88,11 @@ async function handleAddTask() {
 
   try {
     await createTask(newTask);
-    document.getElementById("taskName").value = "";
+
     loadAndRenderTasks();
+
+    document.getElementById("addTaskMenu-form").reset();
+    toggleOpenAddTaskMenu();
     console.log("Dodawanie zadania /main.js", newTask);
   } catch (error) {
     alert("Błąd podczas dodawania zadania.");
@@ -141,7 +160,7 @@ async function loadAndRenderTasks() {
       handleDeleteTask,
       handleAddSubTask,
       handleToggleSubTaskComplete,
-      handleDeleteSubtask
+      handleDeleteSubtask,
       // handleToggleComplete,
       // handleStatusChange,
       // handlePriorityChange

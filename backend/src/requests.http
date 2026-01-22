@@ -6,16 +6,93 @@ POST http://localhost:8080/tasks
 Content-Type: application/json
 
 {
-  "name": "Task1",
+  "name": "Integrate Payment Gateway",
   "subtasks": [
     {
-      "name": "Subtask1",
+      "name": "Read Stripe API documentation",
+      "completed": true
+    },
+    {
+      "name": "Create backend endpoint for payment intent",
       "completed": false
     },
     {
-      "name": "Subtask2",
+      "name": "Build checkout form on frontend",
+      "completed": false
+    },
+    {
+      "name": "Handle success/error states in UI",
       "completed": false
     }
+  ]
+}
+
+### 1. Frontend Task
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "Landing Page Implementation",
+  "subtasks": [
+    { "name": "Create Header component", "completed": true },
+    { "name": "Implement Hero section", "completed": true },
+    { "name": "Build Features section", "completed": false },
+    { "name": "Design Footer", "completed": false },
+    { "name": "Mobile responsiveness", "completed": false }
+  ]
+}
+
+### 2. Backend Task
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "User Authentication API",
+  "subtasks": [
+    { "name": "Design User database schema", "completed": true },
+    { "name": "Implement Register endpoint", "completed": true },
+    { "name": "Implement Login endpoint", "completed": false },
+    { "name": "Add password hashing", "completed": false }
+  ]
+}
+
+### 3. Optymalizacja
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "Performance & Refactoring",
+  "subtasks": [
+    { "name": "Audit site performance", "completed": true },
+    { "name": "Optimize images", "completed": false },
+    { "name": "Refactor complex functions", "completed": false }
+  ]
+}
+
+### 4. DevOps
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "DevOps: Production Deployment",
+  "subtasks": [
+    { "name": "Create Dockerfile", "completed": true },
+    { "name": "Set up CI/CD pipeline", "completed": false },
+    { "name": "Configure Nginx", "completed": false }
+  ]
+}
+
+### 5. Integracja
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "Integrate Payment Gateway Integrate Payment Gateway Integrate Payment Gateway",
+  "subtasks": [
+    { "name": "Read Stripe API docs", "completed": true },
+    { "name": "Create backend endpoint", "completed": false },
+    { "name": "Build checkout form", "completed": false },
+    { "name": "Handle success/error UI", "completed": false }
   ]
 }
 

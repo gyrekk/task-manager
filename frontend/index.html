@@ -1,44 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="css/style.css" />
-  </head>
-<body>
-  <main>
-    <div id="taskList-header">
-      <h2>Tasks</h2>
-      <button>Add New</button>
-    </div>
-    <div>
-        <input type="text" id="taskName" placeholder="Wpisz nowe zadanie...">
-        <!-- <select name="" id="taskPriority">
-          <option value="LOW">Low</option>
-          <option value="MEDIUM">Medium</option>
-          <option value="HIGH">High</option>
-        </select>
 
-        <input type="date" name="" id="taskDate"> -->
-        <button id="addBtn">Dodaj</button>
-    </div>
-      <table>
-        <thead>
-          <tr>
-            <!-- <td>Status</td> -->
-            <td>Task Name</td>
-            <td>Date</td>
-            <td>Priority</td>
-            <td>Status</td>
-            <td>Action</td>
-          </tr>
-        
-        </thead>
-        <tbody id="taskTable"></tbody>
-      </table>
-  </main>
-  <script type="module" src="js/main.js"></script>
-</body>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_horizarrow_forward_ios"
+    />
+  </head>
+  <body>
+    <main class="tasks-container">
+      <div class="tasks-header">
+        <h2 class="tasks-title">Tasks</h2>
+        <div class="tasks-actions">
+          <button class="actions-btn" id="exportTasksBtn">Export</button>
+          <button class="actions-btn" id="addTaskBtn">Add Task</button>
+        </div>
+      </div>
+      <!-- <div class="tasks-toolbar">
+        <div class="status-options"></div>
+        <div class="sort-options"></div>
+      </div> -->
+      <div class="tasks-content">
+        <div class="list-header">
+          <div class="header-icon"></div>
+          <div class="header-title"><p>Task Name</p></div>
+          <div class="header-date"><p>Date</p></div>
+          <div class="header-status"><p>Status</p></div>
+          <div class="header-progress"><p>Progress</p></div>
+          <div class="header-action"><p>Action</p></div>
+        </div>
+        <ul id="taskList"></ul>
+      </div>
+    </main>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

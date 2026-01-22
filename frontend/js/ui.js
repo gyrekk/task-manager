@@ -3,96 +3,175 @@ export function renderTaskList(
   onDeleteTask,
   onAddSubTask,
   onToggleSubTaskComplete,
-  onDeleteSubTask
+  onDeleteSubTask,
 ) {
-  const tableElement = document.getElementById("taskTable");
-  tableElement.innerHTML = "";
+  const listElement = document.getElementById("taskList");
+
+  const activeTasks = Array.from(
+    document.querySelectorAll(".task-item.active"),
+  );
+  // console.log(activeTasks);
+  // activeTasks.forEach((e) => console.log(e.id));
+
+  const activeTasksIds = activeTasks.map((e) => e.id);
+  console.log(activeTasksIds);
+
+  listElement.innerHTML = "";
 
   tasks.forEach((task) => {
-    const deleteBtnElement = createDeleteBtn(task, onDeleteTask);
+    console.log(task);
 
-    const mainRow = document.createElement("tr");
-    mainRow.classList.add("task-main-row");
+    const taskItem = document.createElement("li");
 
-    const createTd = (content, className) => {
-      const td = document.createElement("td");
-      td.className = className;
-      // Sprawdzamy czy content to element HTML czy zwykły tekst
-      if (content instanceof HTMLElement) {
-        td.appendChild(content);
-      } else {
-        td.innerText = content;
-      }
-      return td;
-    };
+    taskItem.classList.add("task-item");
+    taskItem.id = `task${task.id}`;
 
-    mainRow.appendChild(createTd(task.name, "titleData"));
-    mainRow.appendChild(createTd("[data]", "dateData"));
-    mainRow.appendChild(createTd("[priorytet]", "priorityData"));
-    mainRow.appendChild(createTd("[statust]", "statusData"));
-    mainRow.appendChild(createTd(deleteBtnElement, "deleteData"));
+    if (activeTasksIds.includes(taskItem.id)) {
+      taskItem.classList.add("active");
+    }
 
-    tableElement.appendChild(mainRow);
+    taskItem.addEventListener("click", function (e) {
+      this.classList.toggle("active");
+    });
 
-    // Subtaski
-    const detailsRow = document.createElement("tr");
-    detailsRow.classList.add("task-details-row");
+    // Task Header
+    const taskHeader = document.createElement("div");
+    taskHeader.classList.add("task-header");
 
-    const detailsCell = document.createElement("td");
-    detailsCell.colSpan = 5;
+    const activeIcon = createIcon("arrow_forward_ios");
+    const activeCell = createData("active", activeIcon);
+    activeCell.classList = "task-active";
 
-    const descriptionSpan = document.createElement("span");
-    descriptionSpan.textContent = "[opis]";
+    const taskName = document.createElement("p");
+    taskName.innerText = task.name;
+    const nameCell = createData("name", taskName);
 
-    const subTaskInput = document.createElement("input");
-    subTaskInput.type = "text";
-    subTaskInput.classList = "subTaskName-input";
+    const taskDate = document.createElement("p");
+    taskDate.innerText = "Jan 1, 2025";
+    const dateCell = createData("date", taskDate);
 
-    const subTaskAddBtn = document.createElement("button");
-    subTaskAddBtn.innerText = "Add Task";
-    subTaskAddBtn.onclick = () => {
-      const subTaskName = subTaskInput.value;
-      onAddSubTask(subTaskName, task.id);
-      subTaskInput.value = "";
-    };
+    const taskStatus = document.createElement("p");
+    taskStatus.innerText = "not started";
+    const statusCell = createData("status", taskStatus);
+
+    const taskProgress = document.createElement("p");
+    taskProgress.innerText = "0/0";
+    const progressCell = createData("progress", taskProgress);
+    // const deleteBtnElement = createDeleteBtn(task, onDeleteTask);
+
+    const actionIcon = createIcon("more_horiz");
+    const actionCell = createData("action", actionIcon);
+    actionCell.classList = "task-action";
+
+    taskHeader.appendChild(activeCell);
+    taskHeader.appendChild(nameCell);
+    taskHeader.appendChild(dateCell);
+    taskHeader.appendChild(statusCell);
+    taskHeader.appendChild(progressCell);
+    taskHeader.appendChild(actionCell);
+    // taskHeader.appendChild(deleteBtnElement);
+
+    //Task Body
+    const taskBody = document.createElement("div");
+    taskBody.classList.add("task-body");
 
     const subTasksList = document.createElement("ul");
+
     task.subtasks.forEach((subTask) => {
       const li = document.createElement("li");
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = subTask.completed;
-      checkbox.onchange = () => {
-        onToggleSubTaskComplete(subTask);
-      };
+      const subTaskCheckbox = createCheckbox(subTask, onToggleSubTaskComplete);
 
       const text = document.createElement("span");
       text.innerText = subTask.name;
 
       const subTaskDeleteBtn = createDeleteBtn(subTask, onDeleteSubTask);
-      li.appendChild(checkbox);
+
+      li.appendChild(subTaskCheckbox);
       li.appendChild(text);
       li.appendChild(subTaskDeleteBtn);
       subTasksList.appendChild(li);
     });
 
-    detailsCell.appendChild(descriptionSpan);
-    detailsCell.appendChild(subTaskInput);
-    detailsCell.appendChild(subTaskAddBtn);
-    detailsCell.appendChild(subTasksList);
-    detailsRow.appendChild(detailsCell);
+    taskBody.appendChild(subTasksList);
 
-    tableElement.appendChild(detailsRow);
+    taskItem.appendChild(taskHeader);
+    taskItem.appendChild(taskBody);
+    listElement.appendChild(taskItem);
+
+    // const subTaskInput = document.createElement("input");
+    // subTaskInput.type = "text";
+    // subTaskInput.classList = "subTaskName-input";
+    // subTaskInput.placeholder = "Enter subtask name";
+
+    // const subTaskAddBtn = document.createElement("button");
+    // subTaskAddBtn.innerText = "Add Task";
+    // subTaskAddBtn.onclick = () => {
+    //   const subTaskName = subTaskInput.value;
+    //   onAddSubTask(subTaskName, task.id);
+    //   subTaskInput.value = "";
+    // };
+
+    // mainRow.addEventListener("click", function (e) {
+    //   detailsRow.classList.toggle("active");
+    // });
   });
+}
+
+function createIcon(iconName) {
+  const span = document.createElement("span");
+  span.classList = "material-symbols-outlined";
+  span.innerText = iconName;
+  return span;
+}
+
+function createData(data, component) {
+  const cell = document.createElement("div");
+  cell.classList = `task-${data}`;
+  cell.appendChild(component);
+  return cell;
+}
+
+function createCheckbox(subTask, onToggleSubTaskComplete) {
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = subTask.completed;
+  checkbox.onchange = () => {
+    onToggleSubTaskComplete(subTask);
+  };
+  checkbox.onclick = (e) => {
+    e.stopPropagation();
+  };
+  return checkbox;
 }
 
 function createDeleteBtn(task, onDelete) {
   const deleteBtn = document.createElement("button");
   deleteBtn.textContent = "Delete";
 
-  deleteBtn.onclick = () => onDelete(task.id);
+  deleteBtn.onclick = (e) => {
+    e.stopPropagation();
+    onDelete(task.id);
+  };
   return deleteBtn;
+}
+
+function createProgressBar(task) {
+  const subtasks = task.subtasks;
+
+  const completedCount = subtasks.filter((st) => st.completed).length;
+  const totalCount = subtasks.length;
+
+  const span = document.createElement("span");
+  span.innerText = `${completedCount}/${totalCount}`;
+
+  if (!subtasks.length == 0) {
+    span.innerText = `${completedCount}/${totalCount}`;
+  } else {
+    span.innerText = "-";
+  }
+
+  return span;
 }
 
 // function createStatusSelect(task, changeStatus) {
