@@ -71,8 +71,15 @@ public class TaskService {
 
         if(existingTask != null) {
             existingTask.setName(updatedTask.getName());
+            if (updatedTask.getStatus() != null) {
+                existingTask.setStatus(updatedTask.getStatus());
+            }
+            if (updatedTask.getPriority() != null) {
+                existingTask.setPriority(updatedTask.getPriority());
+            }
             return taskRepository.update(existingTask);
         }
+
         return null;
     }
 }

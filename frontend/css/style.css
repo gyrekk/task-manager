@@ -107,7 +107,7 @@ main {
 .list-header,
 .task-header {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1fr 40px;
+  grid-template-columns: 3fr 1fr 1fr 1fr 1fr 40px;
   align-items: center;
   width: 100%;
   gap: 8px;
@@ -158,11 +158,6 @@ main {
   align-items: center;
 }
 
-.task-action {
-  display: flex;
-  justify-content: end;
-}
-
 .task-item-cell p {
   font-weight: 500;
   font-size: 1rem;
@@ -170,30 +165,92 @@ main {
 }
 
 .task-active {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 24px;
   height: 24px;
 }
 
 .task-active span {
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 0.2s ease-in;
   color: var(--icon);
   font-size: 1rem;
+  width: 24px;
+  height: 24px;
 }
 
 .active .task-active span {
   transform: rotate(90deg);
 }
 
+.task-action {
+  position: relative;
+  display: flex;
+  justify-content: end;
+}
+
+.task-action-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.action-icon {
+  opacity: 1;
+}
+.action-icon-close {
+  opacity: 0;
+}
+
+.action-icon,
+.action-icon-close {
+  position: absolute;
+  transition: 0.2s ease-in;
+}
+
+.task-action.active .action-icon {
+  opacity: 0;
+}
+.task-action.active .action-icon-close {
+  opacity: 1;
+}
+.task-action-btn:hover {
+  background-color: hsl(235, 4%, 85%);
+}
+
+.task-action-menu {
+  background-color: hsl(235, 4%, 95%);
+  position: absolute;
+  top: 40px;
+  right: -4px;
+  display: flex;
+  width: 16px;
+  height: 16px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: 0.3s ease-in;
+  z-index: -1;
+}
+.task-action.active .task-action-menu {
+  opacity: 1;
+  z-index: 2;
+  width: 256px;
+  height: 96px;
+}
 .task-body {
   display: grid;
   grid-template-rows: 0fr;
   width: 100%;
   transition: 0.5s ease-in-out;
-  padding-left: calc(3 * var(--item-padding));
+  padding: 0 calc(3 * var(--item-padding));
 }
 
 .task-body-content {
@@ -264,7 +321,7 @@ main {
 }
 .sub-task-item {
   display: flex;
-  gap: 12px;
+
   align-items: center;
   cursor: pointer;
   padding: 8px 8px 8px 14px;
@@ -380,5 +437,22 @@ main {
 }
 
 .sub-task-text {
+  margin-left: 8px;
+  margin-right: 4px;
   flex: 1;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 8px;
+  background-color: transparent;
+  font-size: 0.9rem;
+  outline: none;
+}
+.sub-task-text:focus {
+  flex: 1;
+  background-color: hsl(235, 4%, 95%);
+}
+
+.sub-task-item:hover .sub-task-text:focus {
+  flex: 1;
+  background-color: hsl(235, 4%, 90%);
 }

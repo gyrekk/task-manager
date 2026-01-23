@@ -1,6 +1,8 @@
 package com.gyrekk.taskmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.gyrekk.taskmanager.service.TaskPriority;
+import com.gyrekk.taskmanager.service.TaskStatus;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -12,6 +14,11 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Enumerated(EnumType.STRING) // WAŻNE: Zapisuje w bazie jako "HIGH", a nie 2
+    private TaskPriority priority;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
 
 
     @OneToMany(mappedBy ="task", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,5 +47,21 @@ public class Task {
 
     public void setSubtasks(List<SubTask> subtasks) {
         this.subtasks = subtasks;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
     }
 }

@@ -4,6 +4,7 @@ export function renderTaskList(
   onAddSubTask,
   onToggleSubTaskComplete,
   onDeleteSubTask,
+  onChangeSubTaskName,
 ) {
   const listElement = document.getElementById("taskList");
 
@@ -63,16 +64,42 @@ export function renderTaskList(
     const taskProgress = document.createElement("p");
     taskProgress.innerText = "0/0";
     const progressCell = createData("progress", taskProgress);
-    // const deleteBtnElement = createDeleteBtn(task, onDeleteTask);
+
+    const taskPriority = document.createElement("p");
+    taskProgress.innerText = "0/0";
+    const priorityCell = createData("priority", taskPriority);
 
     const actionIcon = createIcon("more_horiz");
-    const actionCell = createData("action", actionIcon);
+    actionIcon.classList.add("action-icon");
+    const actionIconClose = createIcon("close");
+    actionIconClose.classList.add("action-icon-close");
+    const actionBtn = document.createElement("button");
+    actionBtn.classList = "task-action-btn";
+    actionBtn.appendChild(actionIcon);
+    actionBtn.appendChild(actionIconClose);
+
+    const actionCell = createData("action", actionBtn);
     actionCell.classList.add("task-action");
+
+    const actionMenu = document.createElement("div");
+    actionMenu.classList = "task-action-menu";
+    actionMenu.onclick = (e) => e.stopPropagation();
+
+    const taskDeleteBtn = createDeleteBtn(task, onDeleteTask);
+    actionMenu.appendChild(taskDeleteBtn);
+
+    actionCell.appendChild(actionMenu);
+
+    actionBtn.onclick = (e) => {
+      e.stopPropagation();
+      actionCell.classList.toggle("active");
+    };
 
     taskHeader.appendChild(nameCell);
     taskHeader.appendChild(dateCell);
     taskHeader.appendChild(statusCell);
     taskHeader.appendChild(progressCell);
+    taskHeader.appendChild(priorityCell);
     taskHeader.appendChild(actionCell);
     // taskHeader.appendChild(deleteBtnElement);
 
@@ -130,9 +157,20 @@ export function renderTaskList(
 
       const subTaskCheckbox = createCheckbox(subTask, onToggleSubTaskComplete);
 
-      const text = document.createElement("p");
-      text.innerText = subTask.name;
+      const text = document.createElement("input");
+      text.type = "text";
+      text.value = subTask.name;
       text.className = "sub-task-text";
+      text.onclick = (e) => {
+        e.stopPropagation();
+      };
+      text.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          console.log(subTask.id);
+          console.log(text.value);
+          onChangeSubTaskName(subTask, text.value);
+        }
+      });
 
       const subTaskDeleteBtn = createDeleteBtn(subTask, onDeleteSubTask);
       subTaskDeleteBtn.classList = "sub-task-delete-btn";

@@ -1,4 +1,7 @@
 package com.gyrekk.taskmanager.service;
 
-public class taskStatus {
+public enum TaskStatus {
+    NOT_STARTED,
+    IN_PROGRESS,
+    COMPLETED
 }

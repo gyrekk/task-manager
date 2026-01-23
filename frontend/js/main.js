@@ -73,6 +73,20 @@ async function handleDeleteSubtask(subTaskId) {
   }
 }
 
+async function handleChangeSubtaskName(subTask, subTaskName) {
+  const updatedSubTask = {
+    ...subTask,
+    name: subTaskName,
+  };
+
+  try {
+    await updateSubTask(subTask.id, updatedSubTask);
+    loadAndRenderTasks();
+  } catch (error) {
+    alert("Nie udało się zmienic nazwy.");
+  }
+}
+
 // Tasks
 async function handleAddTask() {
   const name = document.getElementById("taskName").value;
@@ -138,6 +152,7 @@ async function handleStatusChange(task, value) {
     alert("Nie udało się zmienic statusu.");
   }
 }
+
 async function handlePriorityChange(task, value) {
   const updatedTask = {
     ...task,
@@ -161,6 +176,7 @@ async function loadAndRenderTasks() {
       handleAddSubTask,
       handleToggleSubTaskComplete,
       handleDeleteSubtask,
+      handleChangeSubtaskName,
       // handleToggleComplete,
       // handleStatusChange,
       // handlePriorityChange
