@@ -7,28 +7,10 @@ import {
   updateSubTask,
   deleteSubTask,
 } from "./api.js";
-import { renderTaskList } from "./ui.js";
-
-// document
-//   .getElementById("add-task-btn")
-//   .addEventListener("click", toggleOpenAddTaskMenu);
-// document
-//   .getElementById("addTaskMenu-button-close")
-//   .addEventListener("click", function () {
-//     document.getElementById("addTaskMenu-form").reset();
-//     toggleOpenAddTaskMenu();
-//   });
-
-// document
-//   .getElementById("addTaskMenu-form")
-//   .addEventListener("submit", async function (e) {
-//     e.preventDefault();
-
-//     handleAddTask();
-//   });
+import { renderTaskList, updateTaskDOM } from "./ui.js";
 
 // Subtasks
-async function handleAddSubTask(subTaskName, taskId) {
+async function handleAddSubTask(subTaskName, task) {
   if (subTaskName.trim() === "") {
     alert("Wpisz nazwę podzadania!");
     return;
@@ -39,7 +21,13 @@ async function handleAddSubTask(subTaskName, taskId) {
     completed: false,
   };
   try {
-    await createSubTask(newSubtask, taskId);
+    const createdSubTask = await createSubTask(newSubtask, task.id);
+
+    if (!task.subtasks) task.subtasks = [];
+    task.subtasks.push(createdSubTask);
+
+    await handleChangeTaskStatus(task);
+
     loadAndRenderTasks();
     console.log("Dodawanie podzadania /main.js", newSubtask);
   } catch (error) {
@@ -47,26 +35,56 @@ async function handleAddSubTask(subTaskName, taskId) {
   }
 }
 
-async function handleToggleSubTaskComplete(subTask) {
+async function handleToggleSubTaskComplete(subTask, parentTask) {
+  const newStatus = !subTask.completed;
+  const oldStatus = subTask.completed;
+
+  const checkbox = document.getElementById(`subtask-checkbox-${subTask.id}`);
+  if (checkbox) {
+    checkbox.checked = newStatus;
+  }
+
   const updatedSubTask = {
     ...subTask,
-    completed: !subTask.completed,
+    completed: newStatus,
   };
 
   try {
     await updateSubTask(subTask.id, updatedSubTask);
-    loadAndRenderTasks();
+
+    subTask.completed = newStatus;
+
+    await handleChangeTaskStatus(parentTask);
+
+    updateTaskDOM(parentTask);
   } catch (error) {
     alert("Nie udało się zmienic statusu.");
+
+    if (checkbox) checkbox.checked = oldStatus;
+    subTask.completed = oldStatus;
+
+    updateTaskDOM(parentTask);
   }
 }
 
-async function handleDeleteSubtask(subTaskId) {
+async function handleDeleteSubtask(subTaskId, task) {
   if (!confirm("Na pewno usunąć?")) return;
 
   try {
     await deleteSubTask(subTaskId);
-    loadAndRenderTasks();
+
+    if (task.subtasks) {
+      task.subtasks = task.subtasks.filter((t) => t.id !== subTaskId);
+    }
+
+    const subTaskElement = document.getElementById(`subtask${subTaskId}`);
+    if (subTaskElement) {
+      subTaskElement.remove();
+    }
+
+    await handleChangeTaskStatus(task);
+    updateTaskDOM(task);
+
     console.log("Usuwanie podzadania /main.js", subTaskId);
   } catch (error) {
     alert("Błąd podczas usuwania podzadania.");
@@ -118,7 +136,12 @@ export async function handleDeleteTask(id) {
 
   try {
     await deleteTask(id);
-    loadAndRenderTasks();
+
+    const taskElement = document.getElementById(`task${id}`);
+    if (taskElement) {
+      taskElement.remove();
+    }
+
     console.log("Usuwanie zadania /main.js", id);
   } catch (error) {
     alert("Błąd podczas usuwania zadania.");
@@ -139,19 +162,19 @@ async function handleToggleComplete(task) {
   }
 }
 
-async function handleStatusChange(task, value) {
-  const updatedTask = {
-    ...task,
-    status: value,
-  };
+// async function handleStatusChange(task, value) {
+//   const updatedTask = {
+//     ...task,
+//     status: value,
+//   };
 
-  try {
-    await updateTask(task.id, updatedTask);
-    loadAndRenderTasks();
-  } catch (error) {
-    alert("Nie udało się zmienic statusu.");
-  }
-}
+//   try {
+//     await updateTask(task.id, updatedTask);
+//     loadAndRenderTasks();
+//   } catch (error) {
+//     alert("Nie udało się zmienic statusu.");
+//   }
+// }
 
 async function handlePriorityChange(task, value) {
   const updatedTask = {
@@ -167,6 +190,48 @@ async function handlePriorityChange(task, value) {
   }
 }
 
+async function handleChangeTaskStatus(task) {
+  const subtasks = task.subtasks;
+
+  if (!subtasks || subtasks.length === 0) {
+    if (task.status !== "NOT_STARTED") {
+      task.status = "NOT_STARTED";
+      await updateTask(task.id, { ...task, status: "NOT_STARTED" });
+    }
+    return;
+  }
+
+  let completed = 0;
+  for (let i = 0; i < subtasks.length; i++) {
+    if (subtasks[i].completed) {
+      completed++;
+    }
+  }
+
+  let status = "NOT_STARTED";
+  if (completed === 0) {
+    status = "NOT_STARTED";
+  } else if (completed === subtasks.length) {
+    status = "COMPLETED";
+  } else {
+    status = "IN_PROGRESS";
+  }
+
+  if (task.status === status) return;
+
+  const updatedTask = {
+    ...task,
+    status: status,
+  };
+
+  try {
+    await updateTask(task.id, updatedTask);
+    task.status = status;
+  } catch (error) {
+    alert("Nie udało się zmienic statusu.");
+  }
+}
+
 async function loadAndRenderTasks() {
   try {
     const tasks = await getTasks();
@@ -177,13 +242,14 @@ async function loadAndRenderTasks() {
       handleToggleSubTaskComplete,
       handleDeleteSubtask,
       handleChangeSubtaskName,
+      handleChangeTaskStatus,
       // handleToggleComplete,
       // handleStatusChange,
       // handlePriorityChange
     );
     console.log("Wyświetlanie listy zadan /main.js", tasks);
   } catch (error) {
-    console.error("Nie udało się załadować zadań.");
+    alert("Nie udało się załadować zadań.");
   }
 }
 

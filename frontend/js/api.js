@@ -95,5 +95,6 @@ export async function updateSubTask(subTaskId, updatedSubTask) {
     return await response.json();
   } catch (error) {
     console.error("Nie udało się zmienić podzadania: ", error);
+    throw error;
   }
 }

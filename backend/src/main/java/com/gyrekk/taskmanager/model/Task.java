@@ -5,6 +5,7 @@ import com.gyrekk.taskmanager.service.TaskPriority;
 import com.gyrekk.taskmanager.service.TaskStatus;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +15,9 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private LocalDate date;
     @Enumerated(EnumType.STRING) // WAŻNE: Zapisuje w bazie jako "HIGH", a nie 2
     private TaskPriority priority;
-
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
@@ -63,5 +64,13 @@ public class Task {
 
     public void setPriority(TaskPriority priority) {
         this.priority = priority;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

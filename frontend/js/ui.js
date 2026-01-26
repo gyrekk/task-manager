@@ -5,6 +5,7 @@ export function renderTaskList(
   onToggleSubTaskComplete,
   onDeleteSubTask,
   onChangeSubTaskName,
+  onChangeTaskStatus,
 ) {
   const listElement = document.getElementById("taskList");
 
@@ -15,7 +16,7 @@ export function renderTaskList(
   // activeTasks.forEach((e) => console.log(e.id));
 
   const activeTasksIds = activeTasks.map((e) => e.id);
-  console.log(activeTasksIds);
+  // console.log(activeTasksIds);
 
   listElement.innerHTML = "";
 
@@ -53,20 +54,18 @@ export function renderTaskList(
     nameCell.appendChild(activeCell);
     nameCell.appendChild(taskName);
 
-    const taskDate = document.createElement("p");
-    taskDate.innerText = "Jan 1, 2025";
-    const dateCell = createData("date", taskDate);
+    const dateContainer = document.createElement("p");
+    const taskDate = formateDate(task.date);
+    dateContainer.innerText = taskDate;
+    const dateCell = createData("date", dateContainer);
 
-    const taskStatus = document.createElement("p");
-    taskStatus.innerText = "not started";
+    const taskStatus = createStatus(task);
     const statusCell = createData("status", taskStatus);
 
-    const taskProgress = document.createElement("p");
-    taskProgress.innerText = "0/0";
-    const progressCell = createData("progress", taskProgress);
+    const taskProgressBar = createProgressBar(task);
+    const progressCell = createData("progress", taskProgressBar);
 
-    const taskPriority = document.createElement("p");
-    taskProgress.innerText = "0/0";
+    const taskPriority = createPriority(task);
     const priorityCell = createData("priority", taskPriority);
 
     const actionIcon = createIcon("more_horiz");
@@ -85,7 +84,7 @@ export function renderTaskList(
     actionMenu.classList = "task-action-menu";
     actionMenu.onclick = (e) => e.stopPropagation();
 
-    const taskDeleteBtn = createDeleteBtn(task, onDeleteTask);
+    const taskDeleteBtn = createDeleteTaskBtn(task, onDeleteTask);
     actionMenu.appendChild(taskDeleteBtn);
 
     actionCell.appendChild(actionMenu);
@@ -132,7 +131,7 @@ export function renderTaskList(
     subTaskAddBtn.innerText = "Add Task";
     subTaskAddBtn.onclick = () => {
       const subTaskName = subTaskInput.value;
-      onAddSubTask(subTaskName, task.id);
+      onAddSubTask(subTaskName, task);
       subTaskInput.value = "";
     };
     // subTaskAddBtn.addEventListener("");
@@ -149,13 +148,16 @@ export function renderTaskList(
     task.subtasks.forEach((subTask) => {
       const li = document.createElement("li");
       li.classList = "sub-task-item";
+      li.id = `subtask${subTask.id}`;
 
       li.onclick = (e) => {
         e.stopPropagation();
-        onToggleSubTaskComplete(subTask);
+        onToggleSubTaskComplete(subTask, task);
       };
 
-      const subTaskCheckbox = createCheckbox(subTask, onToggleSubTaskComplete);
+      const subTaskCheckbox = createCheckbox(subTask, (clickedSubTask) =>
+        onToggleSubTaskComplete(clickedSubTask, task),
+      );
 
       const text = document.createElement("input");
       text.type = "text";
@@ -172,7 +174,11 @@ export function renderTaskList(
         }
       });
 
-      const subTaskDeleteBtn = createDeleteBtn(subTask, onDeleteSubTask);
+      const subTaskDeleteBtn = createDeleteSubTaskBtn(
+        subTask,
+        task,
+        onDeleteSubTask,
+      );
       subTaskDeleteBtn.classList = "sub-task-delete-btn";
 
       li.appendChild(subTaskCheckbox);
@@ -186,12 +192,27 @@ export function renderTaskList(
     taskItem.appendChild(taskHeader);
     taskItem.appendChild(taskBody);
     listElement.appendChild(taskItem);
-
-    // mainRow.addEventListener("click", function (e) {
-    //   detailsRow.classList.toggle("active");
-    // });
   });
 }
+
+export function updateTaskDOM(task) {
+  console.log(task);
+  const taskItem = document.getElementById(`task${task.id}`);
+  if (!taskItem) return;
+
+  const progressContainer = taskItem.querySelector(".progress-container");
+
+  if (progressContainer) {
+    populateProgressBar(progressContainer, task.subtasks);
+  }
+
+  const statusContainer = taskItem.querySelector(".status-container");
+  if (statusContainer) {
+    populateStatus(statusContainer, task.status);
+  }
+}
+
+/// sssacdsdaklfdh
 
 function createIcon(iconName) {
   const span = document.createElement("span");
@@ -208,7 +229,7 @@ function createData(data, component) {
   return cell;
 }
 
-function createCheckbox(subTask, onToggleSubTaskComplete) {
+function createCheckbox(subTask, onToggleCallback) {
   const label = document.createElement("label");
   label.classList = "sub-task-custom-checkbox";
   label.onclick = (e) => {
@@ -226,8 +247,9 @@ function createCheckbox(subTask, onToggleSubTaskComplete) {
   checkbox.classList = "sub-task-checkbox";
   checkbox.type = "checkbox";
   checkbox.checked = subTask.completed;
+  checkbox.id = `subtask-checkbox-${subTask.id}`;
   checkbox.onchange = () => {
-    onToggleSubTaskComplete(subTask);
+    onToggleCallback(subTask);
   };
 
   label.appendChild(checkbox);
@@ -235,7 +257,7 @@ function createCheckbox(subTask, onToggleSubTaskComplete) {
   return label;
 }
 
-function createDeleteBtn(task, onDelete) {
+function createDeleteTaskBtn(task, onDelete) {
   const deleteBtn = document.createElement("button");
   const span = document.createElement("span");
   span.classList = "material-symbols-outlined";
@@ -247,72 +269,157 @@ function createDeleteBtn(task, onDelete) {
   };
   return deleteBtn;
 }
-
-function createProgressBar(task) {
-  const subtasks = task.subtasks;
-
-  const completedCount = subtasks.filter((st) => st.completed).length;
-  const totalCount = subtasks.length;
-
+function createDeleteSubTaskBtn(subTask, task, onDelete) {
+  const deleteBtn = document.createElement("button");
   const span = document.createElement("span");
-  span.innerText = `${completedCount}/${totalCount}`;
-
-  if (!subtasks.length == 0) {
-    span.innerText = `${completedCount}/${totalCount}`;
-  } else {
-    span.innerText = "-";
-  }
-
-  return span;
+  span.classList = "material-symbols-outlined";
+  span.innerText = "close";
+  deleteBtn.appendChild(span);
+  deleteBtn.onclick = (e) => {
+    e.stopPropagation();
+    onDelete(subTask.id, task);
+  };
+  return deleteBtn;
 }
 
-// function createStatusSelect(task, changeStatus) {
-//   const selectStatus = document.createElement("select");
-//   const statuses = ["NOT_STARTED", "IN_PROGRESS", "COMPLETED"];
+function createPriority(task) {
+  const priority = document.createElement("div");
+  priority.classList = "priority-container";
+  const dot = document.createElement("span");
+  dot.classList = "priority-dot";
 
-//   statuses.forEach((status) => {
-//     const option = document.createElement("option");
-//     option.value = status;
-//     option.textContent = status
-//       .split("_")
-//       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-//       .join(" ");
+  const span = document.createElement("span");
+  const text =
+    task.priority[0].toUpperCase() + task.priority.slice(1).toLowerCase();
+  span.innerText = text;
+  span.classList = "priority-text";
 
-//     if (task.status === status) {
-//       option.selected = true;
-//     }
+  priority.classList.add(text);
+  priority.appendChild(dot);
+  priority.appendChild(span);
+  return priority;
+}
 
-//     selectStatus.appendChild(option);
-//   });
+// Creators
+function createProgressBar(task) {
+  const progressContainer = document.createElement("div");
+  progressContainer.classList = "progress-container";
 
-//   selectStatus.onchange = (e) => {
-//     changeStatus(task, e.target.value);
-//   };
+  const bar = document.createElement("div");
+  bar.classList = "progress-bar-background";
 
-//   return selectStatus;
-// }
+  const progressBar = document.createElement("div");
+  progressBar.classList = "progress-bar";
 
-// function createPrioritySelect(task, changePriority) {
-//   const selectPriority = document.createElement("select");
-//   const priorities = ["LOW", "MEDIUM", "HIGH"];
+  const span = document.createElement("span");
+  span.classList = "progress-bar-text";
 
-//   priorities.forEach((priority) => {
-//     const option = document.createElement("option");
-//     option.value = priority;
-//     option.textContent = `${priority.charAt(0)}${priority
-//       .slice(1)
-//       .toLowerCase()}`;
+  bar.appendChild(progressBar);
+  progressContainer.appendChild(bar);
+  progressContainer.appendChild(span);
 
-//     if (task.priority === priority) {
-//       option.selected = true;
-//     }
+  populateProgressBar(progressContainer, task.subtasks);
+  return progressContainer;
+}
 
-//     selectPriority.appendChild(option);
-//   });
+function createStatus(task) {
+  const statusContainer = document.createElement("div");
+  statusContainer.classList = "status-container";
 
-//   selectPriority.onchange = (e) => {
-//     changePriority(task, e.target.value);
-//   };
+  const dot = document.createElement("span");
+  dot.classList = "status-dot";
 
-//   return selectPriority;
-// }
+  const span = document.createElement("span");
+  span.classList = "status-text";
+
+  statusContainer.appendChild(dot);
+  statusContainer.appendChild(span);
+
+  populateStatus(statusContainer, task.status);
+  return statusContainer;
+}
+
+// Populators
+function populateProgressBar(progressContainer, subtasks) {
+  const progressBar = progressContainer.querySelector(".progress-bar");
+  const progressText = progressContainer.querySelector(".progress-bar-text");
+
+  const percentage = calculateProgress(subtasks);
+
+  if (progressBar) {
+    progressBar.style.width = `${percentage}%`;
+  }
+  if (progressText) {
+    progressText.innerText = `${Math.round(percentage)}%`;
+  }
+}
+
+function populateStatus(statusContainer, status) {
+  const text = statusContainer.querySelector(".status-text");
+
+  if (!status) return;
+
+  const formattedText = status
+    .toLowerCase()
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+  text.innerText = formattedText;
+
+  statusContainer.classList.remove("NOT_STARTED", "IN_PROGRESS", "COMPLETED");
+
+  statusContainer.classList.add(status);
+  console.log("Status zaktualizowany na:", status);
+}
+// Helpers
+function calculateProgress(subtasks) {
+  if (!subtasks || subtasks.length === 0) return 0;
+  const completed = subtasks.filter((t) => t.completed).length;
+  return (completed / subtasks.length) * 100;
+}
+
+function formateDate(date) {
+  const splitDateArr = date.split("-");
+  let month = "";
+  switch (splitDateArr[1]) {
+    case "01":
+      month = "Jan";
+      break;
+    case "02":
+      month = "Feb";
+      break;
+    case "03":
+      month = "Mar";
+      break;
+    case "04":
+      month = "Apr";
+      break;
+    case "05":
+      month = "May";
+      break;
+    case "06":
+      month = "Jun";
+      break;
+    case "07":
+      month = "Jul";
+      break;
+    case "08":
+      month = "Aug";
+      break;
+    case "09":
+      month = "Sep";
+      break;
+    case "10":
+      month = "Oct";
+      break;
+    case "11":
+      month = "Nov";
+      break;
+    case "12":
+      month = "Dec";
+      break;
+  }
+  const formattedDate = `${month} ${splitDateArr[2]}, ${splitDateArr[0]}`;
+  return formattedDate;
+}

@@ -110,7 +110,7 @@ main {
   grid-template-columns: 3fr 1fr 1fr 1fr 1fr 40px;
   align-items: center;
   width: 100%;
-  gap: 8px;
+  gap: 24px;
 }
 
 .list-header {
@@ -152,6 +152,107 @@ main {
   align-items: center;
   gap: 8px;
 }
+
+.task-priority {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.priority-dot,
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.priority-text,
+.status-text {
+  font-size: 0.8rem;
+}
+.priority-container,
+.status-container {
+  gap: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  border-radius: 12px;
+  transition: 0.2 ease-in;
+}
+
+.status-container.NOT_STARTED .status-dot {
+  background-color: hsl(219, 8%, 41%);
+}
+.status-container.IN_PROGRESS .status-dot {
+  background-color: hsl(41, 85%, 56%);
+}
+.status-container.COMPLETED .status-dot {
+  background-color: hsl(209, 71%, 52%);
+}
+
+.status-container.NOT_STARTED {
+  background-color: hsl(219, 8%, 41%, 0.2);
+  color: hsl(219, 8%, 41%);
+}
+.status-container.IN_PROGRESS {
+  background-color: hsl(41, 85%, 56%, 0.2);
+  color: hsl(41, 85%, 56%);
+}
+.status-container.COMPLETED {
+  background-color: hsl(209, 71%, 52%, 0.2);
+  color: hsl(209, 71%, 52%);
+}
+
+.priority-container.Low .priority-dot {
+  background-color: hsl(140, 79%, 43%);
+}
+.priority-container.Medium .priority-dot {
+  background-color: hsl(41, 85%, 56%);
+}
+.priority-container.High .priority-dot {
+  background-color: hsl(0, 85%, 56%);
+}
+
+.priority-container.Low {
+  background-color: hsl(140, 79%, 43%, 0.2);
+  color: hsl(140, 79%, 43%);
+}
+.priority-container.Medium {
+  background-color: hsl(41, 85%, 56%, 0.2);
+  color: hsl(41, 85%, 56%);
+}
+.priority-container.High {
+  background-color: hsl(0, 85%, 56%, 0.2);
+  color: hsl(0, 85%, 56%);
+}
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+}
+.progress-bar-text {
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: flex-end;
+  width: 40px;
+  transition: 0.3s ease-in;
+}
+.progress-bar-background {
+  position: relative;
+  width: 100%;
+  height: 4px;
+  border-radius: 4px;
+  background-color: hsl(235, 4%, 70%);
+}
+.progress-bar {
+  position: absolute;
+  height: 4px;
+  border-radius: 4px;
+  background-color: hsl(235, 4%, 20%);
+  transition: 0.3s ease-in;
+}
+
 .header-data-cell,
 .task-item-cell {
   display: flex;

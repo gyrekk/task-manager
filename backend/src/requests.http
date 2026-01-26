@@ -7,6 +7,7 @@ Content-Type: application/json
 
 {
   "name": "Fix Critical Login Bug",
+  "date": "2025-01-26",
   "priority": "HIGH",
   "status": "IN_PROGRESS",
   "subtasks": [
@@ -39,6 +40,6 @@ Content-Type: application/json
 {
   "name": "Integrate Payment Gateway (DONE)",
   "status": "COMPLETED",
-  "priority": "LOW",
+  "priority": "MEDIUM",
   "subtasks": []
 }
