@@ -7,7 +7,7 @@ import {
   updateSubTask,
   deleteSubTask,
 } from "./api.js";
-import { renderTaskList, updateTaskDOM } from "./ui.js";
+import { renderTaskList, updateTaskDOM, createSubTaskElement } from "./ui.js";
 
 // Subtasks
 async function handleAddSubTask(subTaskName, task) {
@@ -26,9 +26,21 @@ async function handleAddSubTask(subTaskName, task) {
     if (!task.subtasks) task.subtasks = [];
     task.subtasks.push(createdSubTask);
 
-    await handleChangeTaskStatus(task);
+    const taskItem = document.getElementById(`task${task.id}`);
+    const ul = taskItem.querySelector(".sub-task-list");
 
-    loadAndRenderTasks();
+    const newSubTaskElement = createSubTaskElement(
+      createdSubTask,
+      task,
+      handleDeleteSubtask,
+      handleToggleSubTaskComplete,
+      handleChangeTaskStatus,
+    );
+    newSubTaskElement.classList.add("slide-in-animation");
+    ul.appendChild(newSubTaskElement);
+
+    await handleChangeTaskStatus(task);
+    updateTaskDOM(task);
     console.log("Dodawanie podzadania /main.js", newSubtask);
   } catch (error) {
     alert("Błąd podczas dodawania podzadania.");
@@ -78,8 +90,12 @@ async function handleDeleteSubtask(subTaskId, task) {
     }
 
     const subTaskElement = document.getElementById(`subtask${subTaskId}`);
+
     if (subTaskElement) {
-      subTaskElement.remove();
+      subTaskElement.classList.add("slide-out-animation");
+      setTimeout(() => {
+        subTaskElement.remove();
+      }, 300);
     }
 
     await handleChangeTaskStatus(task);
@@ -139,7 +155,10 @@ export async function handleDeleteTask(id) {
 
     const taskElement = document.getElementById(`task${id}`);
     if (taskElement) {
-      taskElement.remove();
+      taskElement.classList.add("slide-out-animation");
+      setTimeout(() => {
+        taskElement.remove();
+      }, 300);
     }
 
     console.log("Usuwanie zadania /main.js", id);
