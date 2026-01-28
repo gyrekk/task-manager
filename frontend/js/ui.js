@@ -21,7 +21,7 @@ export function renderTaskList(
   listElement.innerHTML = "";
 
   tasks.forEach((task) => {
-    const taskItem = createTask(
+    const taskItem = createTaskElement(
       task,
       onDeleteTask,
       onAddSubTask,
@@ -119,7 +119,7 @@ function createData(data, component) {
   return container;
 }
 
-function createTask(
+export function createTaskElement(
   task,
   onDeleteTask,
   onAddSubTask,

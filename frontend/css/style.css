@@ -9,10 +9,10 @@
 }
 
 :root {
-  --border-radius: 12px;
+  --border-radius: 16px;
   --gap: 16px;
-  --table-padding: 12px;
-  --item-padding: 12px;
+  --padding: 16px;
+  --sub-task-item-padding: 8px;
 
   --background-color: hsl(235, 4%, 90%);
 
@@ -21,11 +21,10 @@
   --gray-200: hsl(235, 4%, 90%);
 
   --gray-300: hsl(235, 4%, 85%); /* table */
-
+  --gray-400: hsl(235, 4%, 75%);
   --text: hsl(235, 4%, 30%); /* table text text */
   --icon: hsl(235, 4%, 40%);
 
-  --gray-400: hsl(235, 4%, 60%);
   --gray-500: hsl(235, 4%, 50%);
   --gray-600: hsl(235, 4%, 40%);
   --gray-700: hsl(235, 4%, 30%);
@@ -39,8 +38,95 @@
 
 body {
   background-color: var(--background-color);
+  overflow: hidden;
 }
-main {
+.add-task-container {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+  opacity: 0;
+  z-index: 3;
+  transition: 0.3s ease-out;
+  background-color: hsl(235, 4%, 20%, 0.3);
+  pointer-events: none;
+  backdrop-filter: blur(2px);
+}
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--gap));
+  width: 30%;
+  height: 100%;
+  background-color: var(--gray-300);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
+  padding: 32px;
+  transition: 0.5s ease-out;
+  transform: translateX(100%);
+}
+.add-task-form hr {
+  background-color: var(--gray-400);
+  height: 1px;
+  border: none;
+}
+.add-task-container.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.add-task-container.active .add-task-form {
+  transform: translateX(0);
+}
+.add-task-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.add-task-body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+.column-input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 4px;
+}
+.column-input label {
+  font-size: 0.8rem;
+  color: var(--gray-700);
+}
+.horizontal-input label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+.add-task-body input,
+.add-task-body select {
+  border-radius: 8px;
+  border: 1px solid var(--gray-400);
+  outline: none;
+  padding: 4px 8px;
+}
+.horizontal-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.add-task-footer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  justify-content: end;
+}
+.tasks-container {
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -73,14 +159,14 @@ main {
   border: none;
 }
 
-#addTaskBtn {
+.dark-btn {
   background-color: var(--gray-900);
   color: var(--background-color);
 }
-#addTaskBtn:hover {
+.dark-btn:hover {
   background-color: var(--gray-1000);
 }
-#addTaskBtn:active {
+.dark-btn:active {
   background-color: var(--gray-800);
 }
 #exportTasksBtn {
@@ -95,8 +181,10 @@ main {
 }
 .tasks-content {
   width: 100%;
-  height: 100%;
+  height: min-content;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 /* naglowek */
 .header-data-cell p {
@@ -119,32 +207,121 @@ main {
   width: 100%;
   color: var(--text);
   border-radius: 16px 16px 0 0;
-  padding: 16px calc(var(--item-padding) + var(--table-padding));
+  padding: 16px calc(var(--padding) + var(--padding));
   padding-bottom: 0;
 }
 
 .task-header {
   cursor: pointer;
-  padding: var(--item-padding);
+  padding: var(--padding);
 }
 .header-title {
   grid-column: span 2;
 }
-#taskList {
+
+.tasks-list-wrapper {
   background-color: var(--gray-300);
   border-radius: 0 0 16px 16px;
-  padding: var(--table-padding);
+
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--table-padding);
-  list-style: none;
+  overflow: hidden;
+
+  padding: var(--padding);
 }
+
+#taskList {
+  background-color: transparent;
+  border-radius: 0;
+
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--padding); */
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray-400) transparent;
+}
+
+@keyframes slideInAndExpandTask {
+  0% {
+    opacity: 0;
+    transform: translateX(-100%); /* Startujemy lekko z lewej */
+
+    /* Element jest "zgnieciony" */
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+  }
+  50% {
+    max-height: 64px;
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+
+    /* Element wraca do normalnych wymiarów */
+    max-height: 64px;
+
+    margin-bottom: var(--padding);
+  }
+}
+
+.slide-in-task-animation {
+  animation: slideInAndExpandTask 0.5s ease-out forwards;
+}
+
+@keyframes slideOutAndCollapseTask {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+    /* Ustawiamy startowe wartości takie, jakie element ma normalnie */
+    max-height: 64px;
+    margin-bottom: var(--padding);
+  }
+  50% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    transform: translateX(100%);
+  }
+}
+
+.slide-out-task-animation {
+  /* Ważne: overflow: hidden jest konieczne, żeby treść nie wystawała podczas zwijania */
+  overflow: hidden;
+  animation: slideOutAndCollapseTask 0.5s ease-in-out forwards;
+  pointer-events: none; /* Żeby nie dało się kliknąć w trakcie usuwania */
+}
+
+#taskList::-webkit-scrollbar-thumb:hover {
+  background-color: var(--gray-500);
+}
+
 .task-item {
   background-color: var(--background-color);
-  border-radius: 8px;
+  border-radius: calc(var(--border-radius) - var(--padding) / 2);
   margin-top: 0;
   border-top: none;
   transition: 0.2s ease-in;
+  margin-bottom: var(--padding);
+}
+
+.task-item:last-child {
+  margin-bottom: 0;
 }
 .task-item:hover {
   background-color: var(--background-color);
@@ -273,6 +450,7 @@ main {
 .task-active {
   width: 16px;
   height: 16px;
+  position: relative;
 }
 
 .task-active span {
@@ -356,7 +534,10 @@ main {
   grid-template-rows: 0fr;
   width: 100%;
   transition: 0.5s ease-in-out;
-  padding: 0 calc(var(--item-padding) + 16px + var(--item-padding));
+  padding: 0
+    calc(
+      16px + var(--gap) + var(--padding) - 6px - var(--sub-task-item-padding)
+    );
 }
 
 .task-body-content {
@@ -366,10 +547,16 @@ main {
   transition: 0.5s ease-in-out;
 }
 .active .task-body {
-  /* background-color: antiquewhite; */
   grid-template-rows: 1fr;
-  padding: calc(2 * var(--item-padding))
-    calc(var(--item-padding) + 16px + var(--item-padding));
+  /* padding: 0
+    calc(
+      16px + var(--gap) + var(--padding) - 6px - var(--sub-task-item-padding)
+    );
+  padding-top: 10px; */
+  padding: calc(var(--padding))
+    calc(
+      16px + var(--gap) + var(--padding) - 6px - var(--sub-task-item-padding)
+    );
 }
 
 .active .task-body-content {
@@ -380,42 +567,73 @@ main {
   display: flex;
   flex-direction: column;
   list-style: none;
-  gap: 12px;
 }
 
-@keyframes slideIn {
-  from {
+@keyframes slideInAndExpandSubTask {
+  0% {
     opacity: 0;
-    transform: translateX(-100px);
+    transform: translateX(-100%); /* Startujemy lekko z lewej */
+
+    /* Element jest "zgnieciony" */
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
-  to {
+  60% {
+    max-height: 48px;
+    padding-top: 8px; /* Przywracamy Twój standardowy padding */
+    padding-bottom: 8px;
+  }
+  100% {
     opacity: 1;
     transform: translateX(0);
+
+    /* Element wraca do normalnych wymiarów */
+    max-height: 48px;
+    margin-bottom: var(
+      --sub-task-item-padding
+    ); /* Dajemy zapas, żeby zmieścił się tekst (np. 2 linijki) */
+    padding-top: 8px; /* Przywracamy Twój standardowy padding */
+    padding-bottom: 8px;
   }
 }
 
 .slide-in-animation {
-  animation: slideIn 0.3s ease-out forwards;
+  animation: slideInAndExpandSubTask 0.5s ease-out forwards;
 }
 
-@keyframes slideOut {
-  from {
+@keyframes slideOutAndCollapseSubTask {
+  0% {
     opacity: 1;
     transform: translateX(0);
+    /* Ustawiamy startowe wartości takie, jakie element ma normalnie */
+    max-height: 48px;
   }
-  to {
+  50% {
     opacity: 0;
-    transform: translateX(100px);
+    transform: translateX(100%);
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+    transform: translateX(100%);
   }
 }
 
 .slide-out-animation {
-  animation: slideOut 0.3s ease-out forwards;
+  /* Ważne: overflow: hidden jest konieczne, żeby treść nie wystawała podczas zwijania */
+  overflow: hidden;
+  animation: slideOutAndCollapseSubTask 0.5s ease-in-out forwards;
+  pointer-events: none; /* Żeby nie dało się kliknąć w trakcie usuwania */
 }
+
 .sub-tasks-controls {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
+  padding: 0 calc(6px + var(--sub-task-item-padding));
 }
 .sub-task-input {
   flex: 1;
@@ -458,15 +676,18 @@ main {
 }
 .sub-task-item {
   display: flex;
-
   align-items: center;
   cursor: pointer;
-  padding: 8px 8px 8px 14px;
+  padding: 8px calc(6px + var(--sub-task-item-padding));
   transition: 0.2s ease-in;
-  border-radius: 20px;
+  border-radius: 12px;
+  margin-bottom: var(--sub-task-item-padding);
 }
 .sub-task-item:hover {
   background-color: hsl(235, 4%, 85%);
+}
+.sub-task-item:last-child {
+  margin-bottom: 0;
 }
 
 .sub-task-custom-checkbox {
@@ -578,8 +799,9 @@ main {
   margin-right: 4px;
   flex: 1;
   border: none;
-  border-radius: 8px;
-  padding: 8px 8px;
+  border-radius: 12px;
+  padding: 0 var(--sub-task-item-padding);
+  height: 32px;
   background-color: transparent;
   font-size: 0.9rem;
   outline: none;

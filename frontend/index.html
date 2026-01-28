@@ -12,12 +12,68 @@
     />
   </head>
   <body>
-    <main class="tasks-container">
+    <section class="add-task-container">
+      <form action="" class="add-task-form" id="addTaskForm">
+        <div class="add-task-header">
+          <h3>Add Task</h3>
+        </div>
+        <hr />
+        <div class="add-task-body">
+          <div class="add-task-body-name column-input">
+            <label for="taskNameInput">Task Name</label>
+            <input
+              type="text"
+              name="taskNameInput"
+              id="taskNameInput"
+              placeholder="Enter task name"
+            />
+          </div>
+          <div class="add-task-body-date horizontal-input">
+            <label for="taskDateInput"
+              ><span class="material-symbols-outlined">
+                calendar_month
+              </span></label
+            >
+            <input type="date" name="taskDateInput" id="taskDateInput" />
+          </div>
+          <div class="add-task-body-priority horizontal-input">
+            <label for="taskPriorityInput"
+              ><span class="material-symbols-outlined"> flag_2 </span></label
+            >
+            <select name="taskPriorityInput" id="taskPriorityInput">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+            </select>
+          </div>
+        </div>
+        <hr />
+        <div class="add-task-footer">
+          <button
+            id="closeAddTaskMenuBtn"
+            type="button"
+            class="close-add-task-container actions-btn"
+          >
+            Cancel
+          </button>
+          <button
+            id="AddTaskBtn"
+            type="submit"
+            class="close-add-task-container actions-btn dark-btn"
+          >
+            Create Task
+          </button>
+        </div>
+      </form>
+    </section>
+    <section class="tasks-container">
       <div class="tasks-header">
         <h2 class="tasks-title">Tasks</h2>
         <div class="tasks-actions">
           <!-- <button class="actions-btn" id="exportTasksBtn">Export</button> -->
-          <button class="actions-btn" id="addTaskBtn">Add New Task</button>
+          <button class="actions-btn dark-btn" id="openAddTaskMenuBtn">
+            Add New Task
+          </button>
         </div>
       </div>
       <!-- <div class="tasks-toolbar">
@@ -33,9 +89,11 @@
           <div class="header-data-cell header-progress"><p>Priority</p></div>
           <div class="header-data-cell header-action"><p>Action</p></div>
         </div>
-        <ul id="taskList"></ul>
+        <div class="tasks-list-wrapper">
+          <ul id="taskList"></ul>
+        </div>
       </div>
-    </main>
+    </section>
     <script type="module" src="js/main.js"></script>
   </body>
 </html>

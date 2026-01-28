@@ -7,7 +7,20 @@ import {
   updateSubTask,
   deleteSubTask,
 } from "./api.js";
-import { renderTaskList, updateTaskDOM, createSubTaskElement } from "./ui.js";
+import {
+  renderTaskList,
+  updateTaskDOM,
+  createTaskElement,
+  createSubTaskElement,
+} from "./ui.js";
+
+// App
+document.getElementById("openAddTaskMenuBtn").onclick = () => {
+  document.querySelector(".add-task-container").classList.toggle("active");
+};
+document.getElementById("closeAddTaskMenuBtn").onclick = () => {
+  document.querySelector(".add-task-container").classList.toggle("active");
+};
 
 // Subtasks
 async function handleAddSubTask(subTaskName, task) {
@@ -37,7 +50,10 @@ async function handleAddSubTask(subTaskName, task) {
       handleChangeTaskStatus,
     );
     newSubTaskElement.classList.add("slide-in-animation");
-    ul.appendChild(newSubTaskElement);
+    ul.prepend(newSubTaskElement);
+    setTimeout(() => {
+      newSubTaskElement.classList.remove("slide-in-animation");
+    }, 600);
 
     await handleChangeTaskStatus(task);
     updateTaskDOM(task);
@@ -95,8 +111,12 @@ async function handleDeleteSubtask(subTaskId, task) {
       subTaskElement.classList.add("slide-out-animation");
       setTimeout(() => {
         subTaskElement.remove();
-      }, 300);
+      }, 600);
     }
+
+    setTimeout(() => {
+      subTaskElement.classList.remove("slide-out-animation");
+    }, 600);
 
     await handleChangeTaskStatus(task);
     updateTaskDOM(task);
@@ -122,25 +142,57 @@ async function handleChangeSubtaskName(subTask, subTaskName) {
 }
 
 // Tasks
-async function handleAddTask() {
-  const name = document.getElementById("taskName").value;
+document
+  .getElementById("addTaskForm")
+  .addEventListener("submit", handleAddTask);
 
-  if (name.trim() === "") {
+async function handleAddTask(e) {
+  e.preventDefault();
+  const name = document.getElementById("taskNameInput").value.trim();
+  let date = document.getElementById("taskDateInput").value;
+  const priority = document.getElementById("taskPriorityInput").value;
+
+  if (name === "") {
     alert("Wpisz tytuł!");
     return;
   }
 
+  if (!date) {
+    date = new Date().toISOString().split("T")[0];
+  }
+
   const newTask = {
     name: name,
+    date: date,
+    priority: priority,
+    status: "NOT_STARTED",
+    subtasks: [],
   };
 
   try {
-    await createTask(newTask);
+    const createdTask = await createTask(newTask);
 
-    loadAndRenderTasks();
+    const newTaskElement = createTaskElement(
+      createdTask,
+      handleDeleteTask,
+      handleAddSubTask,
+      handleToggleSubTaskComplete,
+      handleDeleteSubtask,
+      handleChangeSubtaskName,
+    );
 
-    document.getElementById("addTaskMenu-form").reset();
-    toggleOpenAddTaskMenu();
+    newTaskElement.classList.add("slide-in-task-animation");
+
+    const taskList = document.getElementById("taskList");
+    taskList.prepend(newTaskElement);
+
+    setTimeout(() => {
+      newTaskElement.classList.remove("slide-in-task-animation");
+    }, 600);
+
+    document.getElementById("addTaskForm").reset();
+    document.querySelector(".add-task-container").classList.remove("active");
+
     console.log("Dodawanie zadania /main.js", newTask);
   } catch (error) {
     alert("Błąd podczas dodawania zadania.");
@@ -155,12 +207,15 @@ export async function handleDeleteTask(id) {
 
     const taskElement = document.getElementById(`task${id}`);
     if (taskElement) {
-      taskElement.classList.add("slide-out-animation");
+      taskElement.classList.add("slide-out-task-animation");
       setTimeout(() => {
         taskElement.remove();
-      }, 300);
+      }, 500);
     }
 
+    setTimeout(() => {
+      taskElement.classList.remove("slide-out-task-animation");
+    }, 600);
     console.log("Usuwanie zadania /main.js", id);
   } catch (error) {
     alert("Błąd podczas usuwania zadania.");
