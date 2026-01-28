@@ -1,0 +1,64 @@
+POST http://localhost:8080/tasks
+Content-Type: application/json
+Content-Length: 353
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "name": "Weekly Grocery Shopping",
+  "date": "2025-02-01",
+  "priority": "LOW",
+  "status": "NOT_STARTED",
+  "subtasks": [
+    {
+      "name": "Buy milk and eggs",
+      "completed": false
+    },
+    {
+      "name": "Check vegetables discount",
+      "completed": false
+    },
+    {
+      "name": "Buy cat food",
+      "completed": false
+    }
+  ]
+}
+
+<> 2026-01-27T153754.200.json
+
+###
+
+POST http://localhost:8080/tasks
+Content-Type: application/json
+Content-Length: 353
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2025.2.3
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "name": "Weekly Grocery Shopping",
+  "date": "2025-02-01",
+  "priority": "LOW",
+  "status": "NOT_STARTED",
+  "subtasks": [
+    {
+      "name": "Buy milk and eggs",
+      "completed": false
+    },
+    {
+      "name": "Check vegetables discount",
+      "completed": false
+    },
+    {
+      "name": "Buy cat food",
+      "completed": false
+    }
+  ]
+}
+
+<> 2026-01-27T153749.200.json
+
+###
+
