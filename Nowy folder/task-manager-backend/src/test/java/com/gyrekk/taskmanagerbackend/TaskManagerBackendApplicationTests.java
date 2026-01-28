@@ -1,4 +1,4 @@
-package com.gyrekk.taskmanager;
+package com.gyrekk.taskmanagerbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

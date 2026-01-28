@@ -1,0 +1,97 @@
+### Pobierz wszystkie zadania (GET)
+GET http://localhost:8080/tasks
+
+### Stwórz nowe zadanie (POST)
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "Weekly Grocery Shopping",
+  "date": "2025-02-01",
+  "priority": "LOW",
+  "status": "NOT_STARTED",
+  "subtasks": [
+    {
+      "name": "Buy milk and eggs",
+      "completed": false
+    },
+    {
+      "name": "Check vegetables discount",
+      "completed": false
+    },
+    {
+      "name": "Buy cat food",
+      "completed": false
+    }
+  ]
+}
+
+### Stwórz nowe zadanie (POST)
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "Database Migration to AWS",
+  "date": "2025-01-15",
+  "priority": "HIGH",
+  "status": "COMPLETED",
+  "subtasks": [
+    {
+      "name": "Backup current database",
+      "completed": true
+    },
+    {
+      "name": "Run migration script",
+      "completed": true
+    },
+    {
+      "name": "Verify data integrity",
+      "completed": true
+    }
+  ]
+}
+
+### Stwórz nowe zadanie (POST)
+POST http://localhost:8080/tasks
+Content-Type: application/json
+
+{
+"name": "Learn React Basics",
+"date": "2025-03-01",
+"priority": "LOW",
+"status": "IN_PROGRESS",
+"subtasks": [
+{
+"name": "Watch tutorial on Components",
+"completed": true
+},
+{
+"name": "Learn about Props",
+"completed": true
+},
+{
+"name": "Understand useState hook",
+"completed": true
+},
+{
+"name": "Build a simple counter app",
+"completed": true
+},
+{
+"name": "Read about useEffect",
+"completed": false
+}
+]
+}
+
+### Usuń zadanie (DELETE)
+DELETE http://localhost:8080/tasks/4
+
+### Zaaktualizuj zadanie (PUT)
+PUT http://localhost:8080/tasks/3
+Content-Type: application/json
+
+{
+  "name": "Integrate Payment Gateway",
+  "priority": "MEDIUM"
+}

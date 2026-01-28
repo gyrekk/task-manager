@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c1d62d45-a54f-4caa-8f4e-8d9fe596398b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2026-01-27T153749.200.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2026-01-27T153754.200.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitattributes" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitattributes" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/api-test.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/TaskManagerBackendApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/controller/SubTaskController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/controller/TaskController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/model/SubTask.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/model/Task.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/repository/InMemorySubTaskRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/repository/InMemoryTaskRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/repository/SubTaskRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/repository/TaskRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/service/SubTaskService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/service/TaskPriority.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/service/TaskService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/gyrekk/taskmanager/service/TaskStatus.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/requests.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/gyrekk/taskmanager/TaskManagerBackendApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;gyrekk&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/gyrekk/task-manager.git&quot;,
+    &quot;accountId&quot;: &quot;ffd79508-1516-4045-805f-bacb87697dd9&quot;
+  }
+}</component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="37D65PuOXs390Bfc0q1nxpVki5W" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="sortKey" value="BY_TIME_DESCENDING" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TaskManagerBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.All in requests.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | 1. Frontend Task.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | 2. Backend Task.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | 3. Optymalizacja.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | 4. DevOps.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | 5. Integracja.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Pobierz wszystkie zadania (GET).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Stwórz nowe zadanie (POST)#1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Stwórz nowe zadanie (POST)#2.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Stwórz nowe zadanie (POST)#3.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Stwórz nowe zadanie (POST).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Usuń  zadanie (DELETE).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Usuń zadanie (DELETE).executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.requests | Zaaktualizuj zadanie (PUT).executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.TaskManagerBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Projects/task-manager&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="HttpClient.HttpRequestRunConfigurationType">
+          <value>
+            <map>
+              <entry key="requests | Stwórz nowe zadanie (POST)" value="STOPPED" />
+              <entry key="requests | Stwórz nowe zadanie (POST)#1" value="STOPPED" />
+              <entry key="requests | Stwórz nowe zadanie (POST)#2" value="STOPPED" />
+              <entry key="requests | Stwórz nowe zadanie (POST)#3" value="STOPPED" />
+              <entry key="requests | Zaaktualizuj zadanie (PUT)" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.TaskManagerBackendApplication">
+    <configuration name="requests | Stwórz nowe zadanie (POST)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/backend/src/requests.http" executionIdentifier="Stwórz nowe zadanie (POST)" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="requests | Stwórz nowe zadanie (POST)#1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/backend/src/requests.http" executionIdentifier="Stwórz nowe zadanie (POST)#1" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="requests | Stwórz nowe zadanie (POST)#2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/backend/src/requests.http" executionIdentifier="Stwórz nowe zadanie (POST)#2" index="3" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="requests | Stwórz nowe zadanie (POST)#3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/backend/src/requests.http" executionIdentifier="Stwórz nowe zadanie (POST)#3" index="4" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="requests | Zaaktualizuj zadanie (PUT)" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$PROJECT_DIR$/backend/src/requests.http" executionIdentifier="Zaaktualizuj zadanie (PUT)" index="6" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="TaskManagerBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="temurin-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <module name="task-manager" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.gyrekk.taskmanager.TaskManagerBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="HTTP Request.requests | Stwórz nowe zadanie (POST)#1" />
+        <item itemvalue="HTTP Request.requests | Stwórz nowe zadanie (POST)#2" />
+        <item itemvalue="HTTP Request.requests | Stwórz nowe zadanie (POST)#3" />
+        <item itemvalue="HTTP Request.requests | Zaaktualizuj zadanie (PUT)" />
+        <item itemvalue="HTTP Request.requests | Stwórz nowe zadanie (POST)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c1d62d45-a54f-4caa-8f4e-8d9fe596398b" name="Changes" comment="" />
+      <created>1766425111067</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1766425111067</updated>
+      <workItem from="1766425112166" duration="6987000" />
+      <workItem from="1766504397818" duration="15339000" />
+      <workItem from="1766659998955" duration="16660000" />
+      <workItem from="1766690544522" duration="5431000" />
+      <workItem from="1766757173950" duration="299000" />
+      <workItem from="1766769551632" duration="6240000" />
+      <workItem from="1766915245887" duration="3393000" />
+      <workItem from="1766933252556" duration="3747000" />
+      <workItem from="1767021375986" duration="2131000" />
+      <workItem from="1767121380148" duration="1547000" />
+      <workItem from="1767281144624" duration="790000" />
+      <workItem from="1767555007435" duration="670000" />
+      <workItem from="1767953803403" duration="2000" />
+      <workItem from="1767983437649" duration="1051000" />
+      <workItem from="1768748863007" duration="1583000" />
+      <workItem from="1768815031171" duration="5824000" />
+      <workItem from="1769010467024" duration="927000" />
+      <workItem from="1769072489290" duration="8396000" />
+      <workItem from="1769158741319" duration="3809000" />
+      <workItem from="1769179327496" duration="764000" />
+      <workItem from="1769350747019" duration="2598000" />
+      <workItem from="1769416523381" duration="4251000" />
+      <workItem from="1769505262091" duration="4361000" />
+      <workItem from="1769596768634" duration="1655000" />
+      <workItem from="1769598517898" duration="167000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
