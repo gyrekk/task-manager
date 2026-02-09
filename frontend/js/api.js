@@ -1,8 +1,14 @@
 import { taskUrl, subTaskUrl } from "./config.js";
 
-export async function getTasks() {
+export async function getTasks(sort, search, status) {
+  const params = new URLSearchParams();
+
+  if (sort) params.append("sortBy", sort);
+  if (search) params.append("key", search);
+  if (status) params.append("status", status);
+
   try {
-    const response = await fetch(taskUrl);
+    const response = await fetch(`${taskUrl}?${params.toString()}`);
     if (!response.ok) throw new Error("Błąd pobierania");
     // console.log("Wyświetlanie listy zadan /api.js", response);
     return await response.json();

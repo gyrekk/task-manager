@@ -1,10 +1,14 @@
 package com.gyrekk.taskmanager.repository;
 
 import com.gyrekk.taskmanager.model.Task;
+import com.gyrekk.taskmanager.service.TaskStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class InMemoryTaskRepository implements TaskRepository {
@@ -16,6 +20,62 @@ public class InMemoryTaskRepository implements TaskRepository {
     @Override
     public List <Task> findAll() {
         return tasks;
+    }
+
+    @Override
+    public List <Task> findByCriteria(String key, String sortBy, String status) {
+        Stream<Task> stream = tasks.stream();
+
+        if(key!=null && !key.isEmpty()){
+            String searchKey = key.toLowerCase();
+            stream = stream.filter(t -> t.getName().toLowerCase().contains(searchKey));
+        }
+
+        if(sortBy!=null && !sortBy.isEmpty()){
+            switch(sortBy){
+                case "date-asc":
+                    stream = stream.sorted(Comparator.comparing(Task::getDate));
+                    break;
+                case "date-desc":
+                    stream = stream.sorted(Comparator.comparing(Task::getDate).reversed());
+                    break;
+            }
+        }
+
+        if(status!=null && !status.isEmpty()){
+            switch(status){
+                case "ALL":
+                    break;
+                case "NOT_STARTED":
+                    stream = stream.filter(t -> t.getStatus().equals(TaskStatus.NOT_STARTED));
+                    break;
+                case "IN_PROGRESS":
+                    stream = stream.filter(t -> t.getStatus().equals(TaskStatus.IN_PROGRESS));
+                    break;
+                case "COMPLETED":
+                    stream = stream.filter(t -> t.getStatus().equals(TaskStatus.COMPLETED));
+                    break;
+            }
+        }
+        return stream.collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<Task> findAllBySearchKey(String key) {
+        return tasks.stream().filter(t -> t.getName().contains(key)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Task> findAllByDateDesc() {
+        return tasks.stream().sorted(Comparator.comparing(Task::getDate).reversed())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Task> findAllByDateAsc() {
+        return tasks.stream().sorted(Comparator.comparing(Task::getDate))
+                .collect(Collectors.toList());
     }
 
     //Zwraca taska po id

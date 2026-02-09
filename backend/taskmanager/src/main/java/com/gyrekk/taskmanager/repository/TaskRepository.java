@@ -6,6 +6,13 @@ import java.util.List;
 
 public interface TaskRepository {
     public List<Task> findAll();
+    public List<Task> findByCriteria(String key, String sortBy, String status);
+
+
+    public List<Task> findAllBySearchKey(String key);
+
+    public List<Task> findAllByDateDesc();
+    public List<Task> findAllByDateAsc();
 
     public Task findById(Long taskId);
     public Task findByName(String name);

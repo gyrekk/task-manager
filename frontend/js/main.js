@@ -12,14 +12,132 @@ import {
   updateTaskDOM,
   createTaskElement,
   createSubTaskElement,
+  createSubTaskImput,
 } from "./ui.js";
 
 // App
-document.getElementById("openAddTaskMenuBtn").onclick = () => {
-  document.querySelector(".add-task-container").classList.toggle("active");
+
+document
+  .getElementById("openAddTaskMenuBtn")
+  .addEventListener("click", function () {
+    document.querySelector(".add-task-container").classList.toggle("active");
+  });
+
+document
+  .getElementById("closeAddTaskMenuBtn")
+  .addEventListener("click", function () {
+    document.querySelector(".add-task-container").classList.toggle("active");
+  });
+
+const APP_STATE = {
+  sort: "",
+  search: "",
+  status: "all",
 };
-document.getElementById("closeAddTaskMenuBtn").onclick = () => {
-  document.querySelector(".add-task-container").classList.toggle("active");
+
+const SORT_PATHS = {
+  NEWEST: "date-desc",
+  OLDEST: "date-asc",
+  DEFAULT: "",
+};
+
+const sortingOptions = [
+  {
+    name: "Newest First",
+    icon: "arrow_downward",
+    sorting: SORT_PATHS.NEWEST,
+  },
+  {
+    name: "Oldest First",
+    icon: "arrow_upward",
+    sorting: SORT_PATHS.OLDEST,
+  },
+  {
+    name: "Default Order",
+    icon: "sort",
+    sorting: SORT_PATHS.DEFAULT,
+  },
+];
+
+//----------
+// Sort
+//----------
+let currentIndex = 0;
+
+document.getElementById("sortBtn").addEventListener("click", function () {
+  const currentOption = sortingOptions[currentIndex];
+
+  console.log(currentOption.name);
+  this.value = currentOption.name;
+
+  APP_STATE.sort = currentOption.sorting;
+  document.getElementById("taskList").dataset.sort = APP_STATE.sort;
+
+  currentIndex++;
+  if (currentIndex >= sortingOptions.length) {
+    currentIndex = 0;
+  }
+
+  loadAndRenderTasks();
+});
+
+//----------
+// Search
+//----------
+let searchTimeout;
+document.getElementById("searchInput").addEventListener("input", function () {
+  clearTimeout(searchTimeout);
+  const input = this.value;
+
+  searchTimeout = setTimeout(() => {
+    APP_STATE.search = input;
+    document.getElementById("taskList").dataset.search = APP_STATE.search;
+
+    loadAndRenderTasks();
+  }, 500);
+});
+
+//----------
+// Status
+//----------
+document.querySelectorAll(`input[name="status"]`).forEach((e) => {
+  e.addEventListener("change", function () {
+    document.querySelectorAll(`input[name="status"]`).forEach((el) => {
+      el.classList.remove("active");
+    });
+    APP_STATE.status = e.value.toUpperCase();
+    e.classList.add("active");
+    document.getElementById("taskList").dataset.status = APP_STATE.status;
+    loadAndRenderTasks();
+  });
+});
+
+// document.getElementById("btnDate").onclick = () => {
+//   document.getElementById("taskList").dataset.sort = "/date";
+//   console.log(document.getElementById("taskList").dataset.sort);
+//   loadAndRenderTasks();
+// };
+
+// document.getElementById("btnDateDesc").onclick = () => {
+//   document.getElementById("taskList").dataset.sort = "/date-desc";
+//   console.log(document.getElementById("taskList").dataset.sort);
+//   loadAndRenderTasks();
+// };
+
+document.getElementById("addSubTaskLabel").onclick = () => {
+  const input = document.getElementById("subTaskNameInput"); // Złap input
+  const newSubTaskName = input.value;
+
+  if (newSubTaskName.trim() === "") {
+    alert("Podaj nazwę podzadania!");
+    return;
+  }
+
+  const div = createSubTaskImput(newSubTaskName);
+  const subTasksContainer = document.getElementById("subTasksLabels");
+  subTasksContainer.appendChild(div);
+
+  input.value = "";
 };
 
 // Subtasks
@@ -47,10 +165,10 @@ async function handleAddSubTask(subTaskName, task) {
       task,
       handleDeleteSubtask,
       handleToggleSubTaskComplete,
-      handleChangeTaskStatus,
+      handleChangeSubtaskName,
     );
     newSubTaskElement.classList.add("slide-in-animation");
-    ul.prepend(newSubTaskElement);
+    ul.appendChild(newSubTaskElement);
     setTimeout(() => {
       newSubTaskElement.classList.remove("slide-in-animation");
     }, 600);
@@ -127,7 +245,7 @@ async function handleDeleteSubtask(subTaskId, task) {
   }
 }
 
-async function handleChangeSubtaskName(subTask, subTaskName) {
+async function handleChangeSubtaskName(subTask, subTaskName, task) {
   const updatedSubTask = {
     ...subTask,
     name: subTaskName,
@@ -135,7 +253,10 @@ async function handleChangeSubtaskName(subTask, subTaskName) {
 
   try {
     await updateSubTask(subTask.id, updatedSubTask);
-    loadAndRenderTasks();
+
+    // updateTaskDOM(task);
+
+    console.log("Zmieniono nazwę podzadania /main.js", updatedSubTask);
   } catch (error) {
     alert("Nie udało się zmienic nazwy.");
   }
@@ -161,6 +282,11 @@ async function handleAddTask(e) {
     date = new Date().toISOString().split("T")[0];
   }
 
+  const subTaskLabels = document.querySelectorAll(
+    "#subTasksLabels .sub-task-label p",
+  );
+  // Tworzymy z nich tablicę nazw
+  const tempSubTasksNames = Array.from(subTaskLabels).map((el) => el.innerText);
   const newTask = {
     name: name,
     date: date,
@@ -171,6 +297,17 @@ async function handleAddTask(e) {
 
   try {
     const createdTask = await createTask(newTask);
+
+    if (tempSubTasksNames.length > 0) {
+      const subTaskPromises = tempSubTasksNames.map((subName) => {
+        const subTaskObj = { name: subName, completed: false };
+        return createSubTask(subTaskObj, createdTask.id);
+      });
+
+      const createdSubTasks = await Promise.all(subTaskPromises);
+
+      createdTask.subtasks = createdSubTasks;
+    }
 
     const newTaskElement = createTaskElement(
       createdTask,
@@ -184,13 +321,43 @@ async function handleAddTask(e) {
     newTaskElement.classList.add("slide-in-task-animation");
 
     const taskList = document.getElementById("taskList");
-    taskList.prepend(newTaskElement);
+    const taskListItems = Array.from(
+      document.querySelectorAll("#taskList .task-item"),
+    );
+
+    const currentSort =
+      document.getElementById("taskList").dataset.sort || SORT_PATHS.DEFAULT;
+
+    if (currentSort === SORT_PATHS.DEFAULT) {
+      taskList.appendChild(newTaskElement);
+    } else {
+      const isDescending = currentSort === SORT_PATHS.NEWEST;
+
+      const nextItem = taskListItems.find((item) => {
+        const itemDateString = item.querySelector(".task-date p").dataset.date;
+        const itemDate = new Date(itemDateString);
+        const newDate = new Date(createdTask.date);
+
+        if (isDescending) {
+          return itemDate < newDate;
+        } else {
+          return itemDate > newDate;
+        }
+      });
+
+      if (nextItem) {
+        taskList.insertBefore(newTaskElement, nextItem);
+      } else {
+        taskList.appendChild(newTaskElement);
+      }
+    }
 
     setTimeout(() => {
       newTaskElement.classList.remove("slide-in-task-animation");
     }, 600);
 
     document.getElementById("addTaskForm").reset();
+    document.getElementById("subTasksLabels").innerHTML = "";
     document.querySelector(".add-task-container").classList.remove("active");
 
     console.log("Dodawanie zadania /main.js", newTask);
@@ -221,34 +388,6 @@ export async function handleDeleteTask(id) {
     alert("Błąd podczas usuwania zadania.");
   }
 }
-
-async function handleToggleComplete(task) {
-  const updatedTask = {
-    ...task,
-    completed: !task.completed,
-  };
-
-  try {
-    await updateTask(task.id, updatedTask);
-    loadAndRenderTasks();
-  } catch (error) {
-    alert("Nie udało się zmienic statusu.");
-  }
-}
-
-// async function handleStatusChange(task, value) {
-//   const updatedTask = {
-//     ...task,
-//     status: value,
-//   };
-
-//   try {
-//     await updateTask(task.id, updatedTask);
-//     loadAndRenderTasks();
-//   } catch (error) {
-//     alert("Nie udało się zmienic statusu.");
-//   }
-// }
 
 async function handlePriorityChange(task, value) {
   const updatedTask = {
@@ -303,12 +442,18 @@ async function handleChangeTaskStatus(task) {
     task.status = status;
   } catch (error) {
     alert("Nie udało się zmienic statusu.");
+    console.error(error);
   }
 }
 
 async function loadAndRenderTasks() {
   try {
-    const tasks = await getTasks();
+    const sort = APP_STATE.sort;
+    const search = APP_STATE.search;
+    const status = APP_STATE.status;
+
+    const tasks = await getTasks(sort, search, status);
+
     renderTaskList(
       tasks,
       handleDeleteTask,
@@ -316,7 +461,7 @@ async function loadAndRenderTasks() {
       handleToggleSubTaskComplete,
       handleDeleteSubtask,
       handleChangeSubtaskName,
-      handleChangeTaskStatus,
+
       // handleToggleComplete,
       // handleStatusChange,
       // handlePriorityChange

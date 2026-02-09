@@ -108,7 +108,8 @@ body {
   height: 24px;
 }
 .add-task-body input,
-.add-task-body select {
+.add-task-body select,
+.add-task-subtasks input {
   border-radius: 8px;
   border: 1px solid var(--gray-400);
   outline: none;
@@ -118,6 +119,66 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.add-task-subtasks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#subTaskNameInput {
+  flex: 1;
+}
+#addSubTaskLabel {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: 0.2s ease-in;
+  cursor: pointer;
+  border: none;
+  background-color: var(--gray-900);
+  color: var(--background-color);
+}
+#addSubTaskLabel span {
+  font-size: 1.4rem;
+}
+#addSubTaskLabel:hover {
+  background-color: var(--gray-1000);
+}
+#addSubTaskLabel:active {
+  background-color: var(--gray-800);
+}
+#subTasksLabels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.sub-task-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--gray-400);
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+.sub-task-label p {
+  font-size: 0.8rem;
+  color: var(--gray-600);
+}
+.sub-task-label button {
+  border: none;
+  outline: none;
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  cursor: pointer;
+  color: var(--gray-600);
+}
+.sub-task-label button span {
+  font-size: 1rem;
 }
 .add-task-footer {
   display: flex;
@@ -179,6 +240,7 @@ body {
 #exportTasksBtn:active {
   background-color: var(--gray-150);
 }
+
 .tasks-content {
   width: 100%;
   height: min-content;
@@ -229,6 +291,7 @@ body {
   overflow: hidden;
 
   padding: var(--padding);
+  padding-right: calc(var(--padding) - 8px);
 }
 
 #taskList {
@@ -240,7 +303,7 @@ body {
   flex-direction: column;
   /* gap: var(--padding); */
 
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   height: 100%;
 
@@ -307,16 +370,16 @@ body {
   pointer-events: none; /* Żeby nie dało się kliknąć w trakcie usuwania */
 }
 
-#taskList::-webkit-scrollbar-thumb:hover {
+/* #taskList::-webkit-scrollbar-thumb:hover {
   background-color: var(--gray-500);
-}
+} */
 
 .task-item {
   background-color: var(--background-color);
   border-radius: calc(var(--border-radius) - var(--padding) / 2);
   margin-top: 0;
   border-top: none;
-  transition: 0.2s ease-in;
+  transition: height 0.2s ease-in;
   margin-bottom: var(--padding);
 }
 
@@ -814,4 +877,85 @@ body {
 .sub-task-item:hover .sub-task-text:focus {
   flex: 1;
   background-color: hsl(235, 4%, 90%);
+}
+
+.tasks-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sort-options {
+  display: flex;
+  justify-content: space-between;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--gray-300);
+  padding: 8px;
+  width: 30%;
+  border-radius: 16px;
+}
+.search-bar span {
+  color: var(--gray-500);
+  font-size: 24px;
+}
+.search-bar input {
+  border: none;
+  background-color: transparent;
+  outline: none;
+  width: 100%;
+}
+.search-bar input::placeholder {
+  color: var(--gray-500);
+  font-size: 16px;
+  font-weight: 500;
+}
+.search-bar input:active {
+  border: none;
+  background-color: transparent;
+}
+.search-bar input:focus {
+  border: none;
+  background-color: transparent;
+}
+.search-bar input:hover {
+  border: none;
+  background-color: transparent;
+}
+
+.completed-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  background-color: var(--gray-300);
+  border-radius: 12px;
+  width: fit-content;
+  padding: 4px;
+  width: min-content;
+}
+.completed-switch-slider {
+  position: absolute;
+  width: fit-content;
+  height: 100%;
+  background-color: #17c450;
+  z-index: 4;
+}
+.completed-switch label {
+  padding: 4px 24px;
+  width: fit-content;
+  /* background-color: var(--gray-200); */
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray-500);
+  white-space: nowrap;
+}
+.completed-switch input {
+  display: none;
+}
+.completed-switch input:checked + label {
+  background-color: var(--gray-200);
 }

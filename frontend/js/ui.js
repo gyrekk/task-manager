@@ -5,7 +5,6 @@ export function renderTaskList(
   onToggleSubTaskComplete,
   onDeleteSubTask,
   onChangeSubTaskName,
-  onChangeTaskStatus,
 ) {
   const listElement = document.getElementById("taskList");
 
@@ -20,7 +19,7 @@ export function renderTaskList(
 
   listElement.innerHTML = "";
 
-  tasks.forEach((task) => {
+  tasks.forEach((task, index) => {
     const taskItem = createTaskElement(
       task,
       onDeleteTask,
@@ -29,11 +28,12 @@ export function renderTaskList(
       onDeleteSubTask,
       onChangeSubTaskName,
     );
-    listElement.appendChild(taskItem);
 
     if (activeTasksIds.includes(taskItem.id)) {
       taskItem.classList.add("active");
     }
+
+    listElement.appendChild(taskItem);
   });
 }
 
@@ -244,9 +244,9 @@ export function createSubTaskElement(
   };
   text.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      console.log(subTask.id);
-      console.log(text.value);
-      onChangeSubTaskName(subTask, text.value);
+      e.target.blur();
+      e.preventDefault();
+      onChangeSubTaskName(subTask, text.value, task);
     }
   });
   const subTaskDeleteBtn = createDeleteSubTaskBtn(
@@ -259,6 +259,31 @@ export function createSubTaskElement(
   li.appendChild(text);
   li.appendChild(subTaskDeleteBtn);
   return li;
+}
+
+export function createSubTaskImput(subtaskName) {
+  const div = document.createElement("div");
+  div.classList = "sub-task-label";
+
+  const p = document.createElement("p");
+  p.innerText = subtaskName;
+
+  const btn = document.createElement("button");
+  const span = document.createElement("span");
+  span.classList = "material-symbols-outlined";
+  span.innerText = "close";
+  btn.appendChild(span);
+
+  // POPRAWKA TUTAJ:
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    div.remove(); // <--- To usuwa element z HTML
+  };
+
+  div.appendChild(p);
+  div.appendChild(btn);
+
+  return div;
 }
 
 // Creators
@@ -276,6 +301,7 @@ function createName(task) {
 function createDate(task) {
   const p = document.createElement("p");
   p.innerText = formateDate(task.date);
+  p.dataset.date = task.date;
   return p;
 }
 function createStatus(task) {
@@ -354,7 +380,7 @@ function populateStatus(statusContainer, status) {
   statusContainer.classList.remove("NOT_STARTED", "IN_PROGRESS", "COMPLETED");
 
   statusContainer.classList.add(status);
-  console.log("Status zaktualizowany na:", status);
+  // console.log("Status zaktualizowany na:", status);
 }
 // Helpers
 function calculateProgress(subtasks) {
@@ -363,47 +389,11 @@ function calculateProgress(subtasks) {
   return (completed / subtasks.length) * 100;
 }
 
-function formateDate(date) {
-  const splitDateArr = date.split("-");
-  let month = "";
-  switch (splitDateArr[1]) {
-    case "01":
-      month = "Jan";
-      break;
-    case "02":
-      month = "Feb";
-      break;
-    case "03":
-      month = "Mar";
-      break;
-    case "04":
-      month = "Apr";
-      break;
-    case "05":
-      month = "May";
-      break;
-    case "06":
-      month = "Jun";
-      break;
-    case "07":
-      month = "Jul";
-      break;
-    case "08":
-      month = "Aug";
-      break;
-    case "09":
-      month = "Sep";
-      break;
-    case "10":
-      month = "Oct";
-      break;
-    case "11":
-      month = "Nov";
-      break;
-    case "12":
-      month = "Dec";
-      break;
-  }
-  const formattedDate = `${month} ${splitDateArr[2]}, ${splitDateArr[0]}`;
-  return formattedDate;
+function formateDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric", // lub '2-digit' jeśli chcesz zawsze "01" zamiast "1"
+  });
 }

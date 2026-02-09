@@ -18,8 +18,34 @@ public class TaskService {
         this.subTaskService = subTaskService;
     }
 
-    public List<Task> getAllTasks() {
-        List<Task> allTasks = taskRepository.findAll();
+//    public List<Task> getAllTasks() {
+//        List<Task> tasks = taskRepository.findAll();
+//
+//        List<SubTask> allSubTasks = subTaskService.getAllSubTasks();
+//        for(Task task : tasks) {
+//            List<SubTask> taskChildren = allSubTasks.stream()
+//                    .filter(st -> st.getTask() != null && st.getTask().getId().equals(task.getId()))
+//                    .toList();
+//            task.setSubtasks(taskChildren);
+//        }
+//        return tasks;
+//    }
+
+    public List<Task> getAllTasks(String key, String sortBy, String status) {
+        List<Task> tasks = taskRepository.findByCriteria(key, sortBy, status);
+
+        List<SubTask> allSubTasks = subTaskService.getAllSubTasks();
+        for(Task task : tasks) {
+            List<SubTask> taskChildren = allSubTasks.stream()
+                    .filter(st -> st.getTask() != null && st.getTask().getId().equals(task.getId()))
+                    .toList();
+            task.setSubtasks(taskChildren);
+        }
+        return tasks;
+    }
+
+    public List<Task> getAllBySearchKey(String key) {
+        List<Task> allTasks = taskRepository.findAllBySearchKey(key);
         List<SubTask> allSubTasks = subTaskService.getAllSubTasks();
         for(Task task : allTasks) {
             List<SubTask> taskChildren = allSubTasks.stream()
@@ -29,6 +55,32 @@ public class TaskService {
         }
         return allTasks;
     }
+
+    public List<Task> getAllTasksSortedByDateDesc() {
+        List<Task> sortedTasks = taskRepository.findAllByDateDesc();
+        List<SubTask> allSubTasks = subTaskService.getAllSubTasks();
+        for(Task task : sortedTasks) {
+            List<SubTask> taskChildren = allSubTasks.stream()
+                    .filter(st -> st.getTask() != null && st.getTask().getId().equals(task.getId()))
+                    .toList();
+            task.setSubtasks(taskChildren);
+        }
+        return sortedTasks;
+    }
+
+    public List<Task> getAllTasksSortedByDateAsc() {
+        List<Task> sortedTasks = taskRepository.findAllByDateAsc();
+        List<SubTask> allSubTasks = subTaskService.getAllSubTasks();
+        for(Task task : sortedTasks) {
+            List<SubTask> taskChildren = allSubTasks.stream()
+                    .filter(st -> st.getTask() != null && st.getTask().getId().equals(task.getId()))
+                    .toList();
+            task.setSubtasks(taskChildren);
+        }
+        return sortedTasks;
+    }
+
+
 
     public Task getTaskById(Long taskId) {
         Task task = taskRepository.findById(taskId);

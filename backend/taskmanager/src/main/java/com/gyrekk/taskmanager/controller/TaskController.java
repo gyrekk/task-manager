@@ -4,6 +4,7 @@ import com.gyrekk.taskmanager.model.Task;
 import com.gyrekk.taskmanager.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -18,10 +19,31 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+//    @GetMapping
+//    public List<Task> getAllTasks() {
+//        return taskService.getAllTasks();
+//    }
     @GetMapping
-    public List<Task> getAllTasks() {
-        List<Task> allTasks = taskService.getAllTasks();
+    public List<Task> getAllTasks(@RequestParam(value = "key", required = false) String key,
+                                  @RequestParam(value = "sortBy", required = false) String sortBy,
+                                  @RequestParam(value = "status", required = false) String status) {
+        return taskService.getAllTasks(key, sortBy, status);
+    }
+
+    @GetMapping("/search")
+    public List<Task> getAllTasksBySearchKey(@RequestParam("key") String key) {
+        List<Task> allTasks = taskService.getAllBySearchKey(key);
         return allTasks;
+    }
+
+    @GetMapping("/date-desc")
+    public List<Task> getAllTasksByDateDesc() {
+        return taskService.getAllTasksSortedByDateDesc();
+    }
+
+    @GetMapping("/date")
+    public List<Task> getAllTasksByDate() {
+        return taskService.getAllTasksSortedByDateAsc();
     }
 
     @PostMapping
