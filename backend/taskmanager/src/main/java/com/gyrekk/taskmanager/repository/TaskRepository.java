@@ -20,4 +20,6 @@ public interface TaskRepository {
     public Task save(Task task);
     public void deleteById(Long taskId);
     public Task update(Task task);
+
+    public List<Task> saveListOfTasks(List<Task> tasksList);
 }

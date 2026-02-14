@@ -103,7 +103,7 @@ public class InMemoryTaskRepository implements TaskRepository {
         }
 
         tasks.removeIf(t -> t.getId().equals(task.getId()));
-        tasks.add(task);
+        tasks.add(0, task);
 
         return task;
     }
@@ -125,5 +125,16 @@ public class InMemoryTaskRepository implements TaskRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Task> saveListOfTasks(List<Task> tasksList) {
+        List<Task> savedTasks = new ArrayList<>();
+
+        for(Task task : tasks) {
+            Task saved =  save(task);
+            savedTasks.add(saved);
+        }
+        return savedTasks;
     }
 }

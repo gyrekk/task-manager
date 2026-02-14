@@ -86,7 +86,7 @@ function createCheckbox(subTask, onToggleCallback) {
 
 function createDeleteTaskBtn(task, onDelete) {
   const deleteBtn = document.createElement("button");
-  deleteBtn.classList = "sub-task-delete-btn";
+  deleteBtn.classList = "delete-btn";
   const span = document.createElement("span");
   span.classList = "material-symbols-outlined";
   span.innerText = "close";
@@ -140,8 +140,8 @@ export function createTaskElement(
     taskItem.classList.toggle("active");
   });
 
-  const activeIcon = createIcon("arrow_forward_ios");
-  const iconCell = createData("active", activeIcon);
+  // const activeIcon = createIcon("arrow_forward_ios");
+  // const iconCell = createData("active", activeIcon);
 
   const nameContainer = createName(task);
   const nameCell = createData("name", nameContainer);
@@ -160,7 +160,7 @@ export function createTaskElement(
 
   const deleteTaskBtn = createDeleteTaskBtn(task, onDeleteTask);
   const actionCell = createData("action", deleteTaskBtn);
-  taskHeader.appendChild(iconCell);
+  // taskHeader.appendChild(iconCell);
   taskHeader.appendChild(nameCell);
   taskHeader.appendChild(dateCell);
   taskHeader.appendChild(statusCell);
@@ -309,10 +309,10 @@ function createStatus(task) {
   statusContainer.classList = "status-container";
   const dot = document.createElement("span");
   dot.classList = "status-dot";
-  const span = document.createElement("span");
-  span.classList = "status-text";
+  const p = document.createElement("p");
+  p.classList = "status-text";
   statusContainer.appendChild(dot);
-  statusContainer.appendChild(span);
+  statusContainer.appendChild(p);
   populateStatus(statusContainer, task.status);
   return statusContainer;
 }
@@ -338,15 +338,15 @@ function createPriority(task) {
   const dot = document.createElement("span");
   dot.classList = "priority-dot";
 
-  const span = document.createElement("span");
+  const p = document.createElement("p");
   const text =
     task.priority[0].toUpperCase() + task.priority.slice(1).toLowerCase();
-  span.innerText = text;
-  span.classList = "priority-text";
+  p.innerText = text;
+  p.classList = "priority-text";
 
   priority.classList.add(text);
   priority.appendChild(dot);
-  priority.appendChild(span);
+  priority.appendChild(p);
   return priority;
 }
 // Populators

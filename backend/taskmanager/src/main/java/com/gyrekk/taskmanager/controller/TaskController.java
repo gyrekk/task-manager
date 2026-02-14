@@ -53,6 +53,11 @@ public class TaskController {
         return newTask;
     }
 
+    @PostMapping("/bulk")
+    public List<Task> createTasks(@RequestBody List<Task> tasks) {
+        return taskService.createTasks(tasks);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id) {
         System.out.println("Usunięto zadanie: " + getTaskById(id).getName());

@@ -5,6 +5,7 @@ import com.gyrekk.taskmanager.model.Task;
 import com.gyrekk.taskmanager.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -133,5 +134,13 @@ public class TaskService {
         }
 
         return null;
+    }
+
+    public List<Task> createTasks(List<Task> tasks) {
+        List<Task> savedTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            savedTasks.add(createTask(task));
+        }
+        return savedTasks;
     }
 }

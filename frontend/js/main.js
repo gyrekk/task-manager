@@ -68,7 +68,8 @@ document.getElementById("sortBtn").addEventListener("click", function () {
   const currentOption = sortingOptions[currentIndex];
 
   console.log(currentOption.name);
-  this.value = currentOption.name;
+
+  this.querySelector("p").innerText = currentOption.name;
 
   APP_STATE.sort = currentOption.sorting;
   document.getElementById("taskList").dataset.sort = APP_STATE.sort;
@@ -102,16 +103,32 @@ document.getElementById("searchInput").addEventListener("input", function () {
 //----------
 document.querySelectorAll(`input[name="status"]`).forEach((e) => {
   e.addEventListener("change", function () {
-    document.querySelectorAll(`input[name="status"]`).forEach((el) => {
-      el.classList.remove("active");
-    });
+    document
+      .querySelectorAll(".completedLabel")
+      .forEach((e) => e.classList.remove("active"));
     APP_STATE.status = e.value.toUpperCase();
-    e.classList.add("active");
     document.getElementById("taskList").dataset.status = APP_STATE.status;
-    loadAndRenderTasks();
+
+    moveSlider(e);
+    setTimeout(() => {
+      loadAndRenderTasks();
+    }, 300);
   });
 });
 
+const slider = document.querySelector(".completed-switch-slider");
+function moveSlider(clickedInput) {
+  const label = clickedInput.nextElementSibling;
+
+  const container = clickedInput.parentNode;
+  const firstLabel = container.querySelector("label");
+
+  const width = label.offsetWidth;
+  const left = label.offsetLeft - firstLabel.offsetLeft;
+
+  slider.style.width = `${width}px`;
+  slider.style.transform = `translateX(${left}px)`;
+}
 // document.getElementById("btnDate").onclick = () => {
 //   document.getElementById("taskList").dataset.sort = "/date";
 //   console.log(document.getElementById("taskList").dataset.sort);
@@ -124,22 +141,49 @@ document.querySelectorAll(`input[name="status"]`).forEach((e) => {
 //   loadAndRenderTasks();
 // };
 
-document.getElementById("addSubTaskLabel").onclick = () => {
-  const input = document.getElementById("subTaskNameInput"); // Złap input
-  const newSubTaskName = input.value;
+// 1. Definiujemy funkcję dodawania (żeby jej użyć w obu miejscach)
+function addSubTaskVisualOnly() {
+  const input = document.getElementById("subTaskNameInput");
+  const subTasksContainer = document.getElementById("subTasksLabels");
 
-  if (newSubTaskName.trim() === "") {
-    alert("Podaj nazwę podzadania!");
+  if (!input || !subTasksContainer) return;
+
+  const newSubTaskName = input.value.trim();
+
+  if (newSubTaskName === "") {
     return;
   }
 
   const div = createSubTaskImput(newSubTaskName);
-  const subTasksContainer = document.getElementById("subTasksLabels");
+
   subTasksContainer.appendChild(div);
-
   input.value = "";
-};
+  input.focus();
+}
 
+document
+  .getElementById("subTaskNameInput")
+  .addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      e.stopPropagation();
+      addSubTaskVisualOnly();
+    }
+  });
+document
+  .getElementById("addSubTaskLabel")
+  .addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    addSubTaskVisualOnly();
+  });
+document
+  .getElementById("taskNameInput")
+  .addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  });
 // Subtasks
 async function handleAddSubTask(subTaskName, task) {
   if (subTaskName.trim() === "") {
@@ -329,7 +373,7 @@ async function handleAddTask(e) {
       document.getElementById("taskList").dataset.sort || SORT_PATHS.DEFAULT;
 
     if (currentSort === SORT_PATHS.DEFAULT) {
-      taskList.appendChild(newTaskElement);
+      taskList.prepend(newTaskElement);
     } else {
       const isDescending = currentSort === SORT_PATHS.NEWEST;
 

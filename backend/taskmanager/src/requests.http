@@ -1,88 +1,214 @@
 ### Pobierz wszystkie zadania (GET)
 GET http://localhost:8080/tasks
 
-### Stwórz nowe zadanie (POST)
-POST http://localhost:8080/tasks
+### Stwórz zadanie: Implementacja Dark Mode
+POST http://localhost:8080/tasks/bulk
 Content-Type: application/json
 
-{
-  "name": "Weekly Grocery Shopping",
-  "date": "2025-02-01",
-  "priority": "LOW",
-  "status": "NOT_STARTED",
-  "subtasks": [
-    {
-      "name": "Buy milk and eggs",
-      "completed": false
-    },
-    {
-      "name": "Check vegetables discount",
-      "completed": false
-    },
-    {
-      "name": "Buy cat food",
-      "completed": false
-    }
-  ]
-}
-
-### Stwórz nowe zadanie (POST)
-POST http://localhost:8080/tasks
-Content-Type: application/json
-
-{
-  "name": "Database Migration to AWS",
-  "date": "2025-01-15",
-  "priority": "HIGH",
-  "status": "COMPLETED",
-  "subtasks": [
-    {
-      "name": "Backup current database",
-      "completed": true
-    },
-    {
-      "name": "Run migration script",
-      "completed": true
-    },
-    {
-      "name": "Verify data integrity",
-      "completed": true
-    }
-  ]
-}
-
-### Stwórz nowe zadanie (POST)
-POST http://localhost:8080/tasks
-Content-Type: application/json
-
-{
-"name": "Learn React Basics",
-"date": "2025-03-01",
-"priority": "LOW",
-"status": "IN_PROGRESS",
-"subtasks": [
-{
-"name": "Watch tutorial on Components",
-"completed": true
-},
-{
-"name": "Learn about Props",
-"completed": true
-},
-{
-"name": "Understand useState hook",
-"completed": true
-},
-{
-"name": "Build a simple counter app",
-"completed": true
-},
-{
-"name": "Read about useEffect",
-"completed": false
-}
+[
+  {
+    "name": "Optimize Database Queries for Dashboard",
+    "date": "2025-02-22",
+    "priority": "HIGH",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Analyze slow queries using EXPLAIN",
+        "completed": false
+      },
+      {
+        "name": "Add indexing to 'tasks' table on 'date' column",
+        "completed": false
+      },
+      {
+        "name": "Refactor N+1 problem in TaskRepository",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Create Reusable Button Component",
+    "date": "2025-02-25",
+    "priority": "LOW",
+    "status": "IN_PROGRESS",
+    "subtasks": [
+      {
+        "name": "Define primary, secondary, and danger variants",
+        "completed": true
+      },
+      {
+        "name": "Add loading spinner state",
+        "completed": false
+      },
+      {
+        "name": "Write Storybook documentation",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Implement Rate Limiting API",
+    "date": "2025-02-28",
+    "priority": "MEDIUM",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Research Bucket4j library",
+        "completed": true
+      },
+      {
+        "name": "Create interceptor for request counting",
+        "completed": false
+      },
+      {
+        "name": "Return 429 Too Many Requests status",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Add Forgot Password Flow",
+    "date": "2025-03-01",
+    "priority": "HIGH",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Design email template for reset link",
+        "completed": false
+      },
+      {
+        "name": "Create backend endpoint for token generation",
+        "completed": false
+      },
+      {
+        "name": "Build frontend form for new password",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Setup GitHub Actions Pipeline",
+    "date": "2025-02-21",
+    "priority": "HIGH",
+    "status": "IN_PROGRESS",
+    "subtasks": [
+      {
+        "name": "Configure Maven build step",
+        "completed": true
+      },
+      {
+        "name": "Run JUnit tests on pull request",
+        "completed": true
+      },
+      {
+        "name": "Add Docker image build and push step",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Fix Avatar Image Caching Bug",
+    "date": "2025-02-23",
+    "priority": "MEDIUM",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Investigate browser cache headers",
+        "completed": false
+      },
+      {
+        "name": "Append timestamp query param to image URL",
+        "completed": false
+      },
+      {
+        "name": "Verify fix on mobile devices",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Upgrade Spring Boot Version",
+    "date": "2025-03-05",
+    "priority": "LOW",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Update pom.xml parent version",
+        "completed": false
+      },
+      {
+        "name": "Replace deprecated Security configuration",
+        "completed": false
+      },
+      {
+        "name": "Run full regression test suite",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Integrate Google Analytics 4",
+    "date": "2025-02-26",
+    "priority": "LOW",
+    "status": "IN_PROGRESS",
+    "subtasks": [
+      {
+        "name": "Create GA property and get Measurement ID",
+        "completed": true
+      },
+      {
+        "name": "Add tracking script to index.html",
+        "completed": false
+      },
+      {
+        "name": "Implement custom event for 'Task Created'",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Update API Swagger Documentation",
+    "date": "2025-02-24",
+    "priority": "MEDIUM",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Add @Operation annotations to TaskController",
+        "completed": false
+      },
+      {
+        "name": "Define schema examples for SubTask",
+        "completed": false
+      },
+      {
+        "name": "Verify UI output at /swagger-ui.html",
+        "completed": false
+      }
+    ]
+  },
+  {
+    "name": "Implement Lazy Loading for Images",
+    "date": "2025-03-02",
+    "priority": "MEDIUM",
+    "status": "NOT_STARTED",
+    "subtasks": [
+      {
+        "name": "Create LazyImage component",
+        "completed": false
+      },
+      {
+        "name": "Use IntersectionObserver API",
+        "completed": false
+      },
+      {
+        "name": "Add blur placeholder effect",
+        "completed": false
+      }
+    ]
+  }
 ]
-}
+
+
 
 ### Usuń zadanie (DELETE)
 DELETE http://localhost:8080/tasks/4

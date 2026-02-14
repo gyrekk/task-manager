@@ -8,11 +8,11 @@
 
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_horizarrow_forward_ioscheckclosesearch"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=more_horizarrow_forward_ioscheckclosesearchswap_vert"
     />
   </head>
   <body>
-    <section class="add-task-container">
+    <section class="add-task-container active">
       <form action="" class="add-task-form" id="addTaskForm">
         <div class="add-task-header">
           <h3>Add Task</h3>
@@ -59,6 +59,7 @@
                 placeholder="Enter subtask name"
               />
               <button id="addSubTaskLabel" type="button">
+                <!-- <p>Add Subtask</p> -->
                 <span class="material-symbols-outlined"> add </span>
               </button>
             </div>
@@ -71,14 +72,14 @@
           <button
             id="closeAddTaskMenuBtn"
             type="button"
-            class="close-add-task-container actions-btn"
+            class="close-add-task-container"
           >
             Cancel
           </button>
           <button
             id="AddTaskBtn"
             type="submit"
-            class="close-add-task-container actions-btn dark-btn"
+            class="close-add-task-container dark-btn"
           >
             Create Task
           </button>
@@ -87,29 +88,24 @@
     </section>
     <section class="tasks-container">
       <div class="tasks-header">
-        <h2 class="tasks-title">Tasks</h2>
+        <h2 class="tasks-title">List</h2>
         <div class="tasks-actions">
           <button class="actions-btn dark-btn" id="openAddTaskMenuBtn">
-            Add New Task
+            <span class="material-symbols-outlined"> add </span>
+            <p>New Task</p>
           </button>
         </div>
       </div>
       <div class="tasks-toolbar">
-        <div class="status-options">
-          <div class="completed-switch">
-            <div class="completed-switch-slider"></div>
-            <input type="radio" name="status" id="all" value="all" checked />
-            <label for="all">All Tasks</label>
+        <div class="completed-switch">
+          <input type="radio" name="status" id="all" value="all" checked />
+          <label class="completedLabel" for="all">All Tasks</label>
 
-            <input
-              type="radio"
-              name="status"
-              id="completed"
-              value="completed"
-            />
-            <label for="completed">Completed</label>
-          </div>
+          <input type="radio" name="status" id="completed" value="completed" />
+          <label class="completedLabel" for="completed">Completed</label>
+          <div class="completed-switch-slider"></div>
         </div>
+
         <div class="sort-options">
           <div class="search-bar">
             <span class="material-symbols-outlined"> search </span
@@ -121,7 +117,10 @@
             />
           </div>
 
-          <input type="button" value="Default Order" id="sortBtn" />
+          <button class="actions-btn light-btn" id="sortBtn">
+            <span class="material-symbols-outlined"> swap_vert </span>
+            <p>Default Order</p>
+          </button>
         </div>
       </div>
       <div class="tasks-content">
@@ -130,12 +129,13 @@
           <div class="header-data-cell header-date"><p>Date</p></div>
           <div class="header-data-cell header-status"><p>Status</p></div>
           <div class="header-data-cell header-progress"><p>Progress</p></div>
-          <div class="header-data-cell header-progress"><p>Priority</p></div>
+          <div class="header-data-cell header-priority"><p>Priority</p></div>
           <div class="header-data-cell header-action"><p>Action</p></div>
         </div>
         <div class="tasks-list-wrapper">
           <ul id="taskList" data-sort="" data-search="" data-status="all"></ul>
         </div>
+        <!-- <div class="list-footer"></div> -->
       </div>
     </section>
     <script type="module" src="js/main.js"></script>
